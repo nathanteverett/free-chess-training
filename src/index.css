@@ -1,0 +1,84 @@
+@import 'tailwindcss';
+
+/*
+  Theme tokens for the app. Tailwind v4 reads these @theme values and generates
+  matching utility classes (e.g. bg-board-light). Keep the palette small.
+*/
+@theme {
+  --color-board-light: #ebecd0;
+  --color-board-dark: #779556;
+  --color-brand: #4a7c2f;
+  --color-brand-dark: #3a6124;
+}
+
+:root {
+  color-scheme: light dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+}
+
+/* Article typography for MDX lesson bodies. */
+.prose-lesson {
+  line-height: 1.7;
+}
+.prose-lesson h1 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin: 1.5rem 0 0.75rem;
+}
+.prose-lesson h2 {
+  font-size: 1.375rem;
+  font-weight: 600;
+  margin: 1.5rem 0 0.5rem;
+}
+.prose-lesson h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 1.25rem 0 0.5rem;
+}
+.prose-lesson p {
+  margin: 0.75rem 0;
+}
+.prose-lesson ul,
+.prose-lesson ol {
+  margin: 0.75rem 0;
+  padding-left: 1.5rem;
+}
+.prose-lesson ul {
+  list-style: disc;
+}
+.prose-lesson ol {
+  list-style: decimal;
+}
+.prose-lesson li {
+  margin: 0.25rem 0;
+}
+.prose-lesson a {
+  color: var(--color-brand);
+  text-decoration: underline;
+}
+.prose-lesson code {
+  background: rgba(120, 149, 86, 0.15);
+  padding: 0.1rem 0.3rem;
+  border-radius: 0.25rem;
+  font-size: 0.9em;
+}
+.prose-lesson strong {
+  font-weight: 600;
+}

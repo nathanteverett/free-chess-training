@@ -6,26 +6,11 @@ import { EvalBar } from '../components/chess/EvalBar'
 import { useEngine } from '../engine/useEngine'
 import { formatScore, uciLineToSan } from '../lib/chess'
 import { lichessAnalysisUrl } from '../lib/lichess'
+import { useBoardSize } from '../lib/useBoardSize'
 import { getAnnotatedGame } from '../content/games'
 
 const START_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
-const CHROME = 260
 const EVAL_BAR = 40
-
-function useBoardSize() {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const [size, setSize] = useState(480)
-  useEffect(() => {
-    const update = () => {
-      const available = containerRef.current?.clientWidth ?? 480
-      setSize(Math.max(280, Math.min(available - EVAL_BAR, window.innerHeight - CHROME)))
-    }
-    update()
-    window.addEventListener('resize', update)
-    return () => window.removeEventListener('resize', update)
-  }, [])
-  return { containerRef, size }
-}
 
 export function Analysis() {
   const [searchParams] = useSearchParams()
@@ -48,7 +33,7 @@ export function Analysis() {
   const [fenInput, setFenInput] = useState('')
   const [fenError, setFenError] = useState('')
   const { evaluation, analyzing, analyze } = useEngine()
-  const { containerRef, size } = useBoardSize()
+  const { containerRef, size } = useBoardSize({ reserved: EVAL_BAR })
 
   useEffect(() => {
     analyze(fen, { depth: 18 })

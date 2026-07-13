@@ -5,10 +5,13 @@ export function Chat({
   messages,
   onSend,
   disabled,
+  className = 'h-64',
 }: {
   messages: ChatMessage[]
   onSend: (text: string) => void
   disabled: boolean
+  /** Sizing classes; override to shrink the chat to a bar in a side rail. */
+  className?: string
 }) {
   const [draft, setDraft] = useState('')
   const endRef = useRef<HTMLDivElement>(null)
@@ -25,7 +28,9 @@ export function Chat({
   }
 
   return (
-    <div className="flex h-64 flex-col rounded-lg border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-900">
+    <div
+      className={`flex flex-col rounded-lg border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-900 ${className}`}
+    >
       <div className="flex-1 space-y-1 overflow-y-auto p-3 text-sm">
         {messages.length === 0 && (
           <p className="text-neutral-500">Say hello to your opponent.</p>

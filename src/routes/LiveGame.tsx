@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type CSSProperties } from 'react'
 import { Chess } from 'chess.js'
 import { Link, useParams } from 'react-router-dom'
 import { BoardView } from '../components/chess/BoardView'
@@ -7,15 +7,22 @@ import { Clock } from '../components/live/Clock'
 import { MoveList } from '../components/live/MoveList'
 import { inviteUrl } from '../live/api'
 import { useLiveGame } from '../live/useLiveGame'
+import { useBoardSize } from '../lib/useBoardSize'
 import type { Color, GameState, Result, Seat } from '../../shared/protocol'
 
 const btn =
   'rounded bg-neutral-200 px-3 py-1.5 text-sm font-medium hover:bg-neutral-300 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-neutral-700 dark:hover:bg-neutral-600'
 
+/** Height of the two player bars (name + clock) stacked around the board. */
+const PLAYER_BARS = 72
+/** Vertical space the page chrome takes above and below the board. */
+const CHROME = 270
+
 export function LiveGame() {
   const { code = '' } = useParams()
   const { state, you, connection, error, serverOffset, send, dismissError } =
     useLiveGame(code)
+  const { containerRef, size } = useBoardSize({ chrome: CHROME })
 
   // Show the move the moment it is dropped rather than a round-trip later; the
   // next server state overwrites it, so a rejected move simply snaps back.
@@ -95,20 +102,28 @@ export function LiveGame() {
         </p>
       )}
 
-      <div className="grid gap-6 lg:grid-cols-[auto_1fr]">
-        <div className="space-y-2">
-          <PlayerBar state={state} color={opponent} serverOffset={serverOffset} />
-          <BoardView
-            fen={optimisticFen ?? state.fen}
-            orientation={orientation}
-            onPieceDrop={onPieceDrop}
-            arePiecesDraggable={yourTurn}
-          />
-          <PlayerBar state={state} color={orientation} serverOffset={serverOffset} />
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_18rem]">
+        <div ref={containerRef}>
+          <div className="mx-auto space-y-2" style={{ maxWidth: size }}>
+            <PlayerBar state={state} color={opponent} serverOffset={serverOffset} />
+            <BoardView
+              fen={optimisticFen ?? state.fen}
+              orientation={orientation}
+              onPieceDrop={onPieceDrop}
+              arePiecesDraggable={yourTurn}
+              maxWidth={size}
+            />
+            <PlayerBar state={state} color={orientation} serverOffset={serverOffset} />
+          </div>
         </div>
 
-        <div className="space-y-4">
-          <MoveList moves={state.moves} />
+        {/* Side rail: the move list grows to fill the board's height, the chat
+            stays a fixed bar pinned beneath it. */}
+        <div
+          className="flex flex-col gap-3 lg:h-[var(--rail-height)]"
+          style={{ '--rail-height': `${size + PLAYER_BARS}px` } as CSSProperties}
+        >
+          <MoveList moves={state.moves} className="h-32 lg:h-auto lg:min-h-24 lg:flex-1" />
 
           {isPlayer && state.status === 'active' && (
             <div className="flex flex-wrap gap-2">
@@ -172,9 +187,10 @@ export function LiveGame() {
             messages={state.chat}
             onSend={(text) => send({ t: 'chat', text })}
             disabled={connection !== 'open'}
+            className="h-48 shrink-0"
           />
 
-          <Link to="/play" className="inline-block text-sm text-brand hover:underline">
+          <Link to="/play" className="text-sm text-brand hover:underline">
             ← Start another game
           </Link>
         </div>

@@ -5,6 +5,24 @@ import mdx from '@mdx-js/rollup'
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
 
+// A bad VITE_LIVE_SERVER_URL cannot fail at build time on its own: it is just a
+// string that gets baked into the bundle, and only breaks in the user's browser
+// when they try to start a game. A placeholder left unreplaced is the obvious
+// way to get this wrong, so refuse to build one.
+const liveServer = process.env.VITE_LIVE_SERVER_URL
+if (liveServer) {
+  try {
+    new URL(liveServer)
+  } catch {
+    throw new Error(
+      `VITE_LIVE_SERVER_URL is not a valid URL: "${liveServer}"\n` +
+        'It must be the deployed Worker origin, e.g.\n' +
+        '  https://free-chess-training-live.<your-subdomain>.workers.dev\n' +
+        'with <your-subdomain> replaced by your real workers.dev subdomain.',
+    )
+  }
+}
+
 // https://vite.dev/config/
 export default defineConfig({
   // GitHub project pages serve the site from /<repo>/, not the domain root, so

@@ -2,13 +2,18 @@ import { useEffect, useState, type CSSProperties } from 'react'
 import { Chess } from 'chess.js'
 import { Link, useParams } from 'react-router-dom'
 import { BoardView } from '../components/chess/BoardView'
+import { EvalBar } from '../components/chess/EvalBar'
 import { Chat } from '../components/live/Chat'
 import { Clock } from '../components/live/Clock'
 import { MoveList } from '../components/live/MoveList'
+import { useEngine } from '../engine/useEngine'
+import { formatScore, uciLineToSan } from '../lib/chess'
+import { lichessAnalysisUrl } from '../lib/lichess'
 import { inviteUrl } from '../live/api'
 import { useLiveGame } from '../live/useLiveGame'
 import { useBoardSize } from '../lib/useBoardSize'
 import type { Color, GameState, Result, Seat } from '../../shared/protocol'
+import type { EngineEval } from '../types'
 
 const btn =
   'rounded bg-neutral-200 px-3 py-1.5 text-sm font-medium hover:bg-neutral-300 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-neutral-700 dark:hover:bg-neutral-600'
@@ -17,17 +22,39 @@ const btn =
 const PLAYER_BARS = 72
 /** Vertical space the page chrome takes above and below the board. */
 const CHROME = 270
+/** Width the eval bar and its gutter take beside the board. */
+const EVAL_BAR = 40
+/** The invite banner only shows until an opponent arrives, but while it does it
+ * pushes the board down, so the board has that much less height to work with. */
+const INVITE_BANNER = 160
 
 export function LiveGame() {
   const { code = '' } = useParams()
   const { state, you, connection, error, serverOffset, send, dismissError } =
     useLiveGame(code)
-  const { containerRef, size } = useBoardSize({ chrome: CHROME })
+
+  // The engine belongs on the shared analysis board and nowhere else: handing a
+  // player Stockfish during a refereed game is just cheating with extra steps.
+  const analysisBoard = state?.mode === 'freeplay'
+  const { evaluation, analyzing, analyze } = useEngine()
+
+  const { containerRef, size } = useBoardSize({
+    chrome: CHROME + (state?.status === 'waiting' ? INVITE_BANNER : 0),
+    reserved: analysisBoard ? EVAL_BAR : 0,
+  })
 
   // Show the move the moment it is dropped rather than a round-trip later; the
   // next server state overwrites it, so a rejected move simply snaps back.
   const [optimisticFen, setOptimisticFen] = useState<string | null>(null)
   useEffect(() => setOptimisticFen(null), [state, error])
+
+  // Evaluate the position the server has confirmed, not the optimistic one, so a
+  // move costs one search rather than two.
+  const serverFen = state?.fen
+  useEffect(() => {
+    if (!analysisBoard || !serverFen) return
+    analyze(serverFen, { depth: 18 })
+  }, [analysisBoard, serverFen, analyze])
 
   if (!state) {
     return (
@@ -104,15 +131,25 @@ export function LiveGame() {
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_18rem]">
         <div ref={containerRef}>
-          <div className="mx-auto space-y-2" style={{ maxWidth: size }}>
+          <div
+            className="mx-auto space-y-2"
+            style={{ maxWidth: size + (analysisBoard ? EVAL_BAR : 0) }}
+          >
             <PlayerBar state={state} color={opponent} serverOffset={serverOffset} />
-            <BoardView
-              fen={optimisticFen ?? state.fen}
-              orientation={orientation}
-              onPieceDrop={onPieceDrop}
-              arePiecesDraggable={yourTurn}
-              maxWidth={size}
-            />
+            <div className="flex gap-3">
+              {analysisBoard && (
+                <div style={{ height: size }}>
+                  <EvalBar evaluation={evaluation} />
+                </div>
+              )}
+              <BoardView
+                fen={optimisticFen ?? state.fen}
+                orientation={orientation}
+                onPieceDrop={onPieceDrop}
+                arePiecesDraggable={yourTurn}
+                maxWidth={size}
+              />
+            </div>
             <PlayerBar state={state} color={orientation} serverOffset={serverOffset} />
           </div>
         </div>
@@ -123,6 +160,10 @@ export function LiveGame() {
           className="flex flex-col gap-3 lg:h-[var(--rail-height)]"
           style={{ '--rail-height': `${size + PLAYER_BARS}px` } as CSSProperties}
         >
+          {analysisBoard && (
+            <EngineReadout fen={state.fen} evaluation={evaluation} analyzing={analyzing} />
+          )}
+
           <MoveList moves={state.moves} className="h-32 lg:h-auto lg:min-h-24 lg:flex-1" />
 
           {isPlayer && state.status === 'active' && (
@@ -224,6 +265,52 @@ function Invite({ code }: { code: string }) {
           {copied ? 'Copied!' : 'Copy invite link'}
         </button>
       </div>
+    </section>
+  )
+}
+
+/**
+ * Score, depth and best line for the shared analysis board. Both players see the
+ * same evaluation, but each browser computes it — the server never sees a FEN.
+ */
+function EngineReadout({
+  fen,
+  evaluation,
+  analyzing,
+}: {
+  fen: string
+  evaluation: EngineEval | null
+  analyzing: boolean
+}) {
+  const line = evaluation ? uciLineToSan(fen, evaluation.pv, 6) : []
+
+  return (
+    <section
+      className="shrink-0 rounded-lg border border-neutral-200 bg-white p-3 text-sm dark:border-neutral-800 dark:bg-neutral-900"
+      aria-label="Engine analysis"
+    >
+      <div className="flex items-baseline gap-2">
+        <span className="text-lg font-bold tabular-nums">
+          {evaluation ? formatScore(evaluation) : '…'}
+        </span>
+        <span className="text-xs text-neutral-500">
+          {analyzing ? 'analyzing…' : `depth ${evaluation?.depth ?? 0}`}
+        </span>
+      </div>
+      {line.length > 0 && (
+        <p className="mt-1 text-xs text-neutral-700 dark:text-neutral-300">
+          <span className="uppercase tracking-wide text-neutral-500">Best line: </span>
+          {line.join(' ')}
+        </p>
+      )}
+      <a
+        href={lichessAnalysisUrl(fen)}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-2 inline-block text-xs font-medium text-brand hover:underline"
+      >
+        Open in Lichess ↗
+      </a>
     </section>
   )
 }

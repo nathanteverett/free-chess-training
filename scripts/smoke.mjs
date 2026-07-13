@@ -4,9 +4,8 @@
 import { chromium } from '@playwright/test'
 
 const BASE = process.env.BASE_URL || 'http://localhost:5173'
-const SHOTS =
-  process.env.SHOT_DIR ||
-  'C:/Users/never/AppData/Local/Temp/claude/c--Users-never-free-chess-training/c7e47c05-3155-4e79-9286-78000039ffb4/scratchpad'
+const SHOTS = process.env.SHOT_DIR || '.'
+const LESSON = 'tactics-knight-forks'
 
 const results = []
 function check(name, ok, detail = '') {
@@ -22,22 +21,32 @@ page.on('console', (m) => {
 })
 
 try {
-  // 1. Home renders the curriculum.
+  // 1. Home renders the skill categories as collapsible dropdowns.
   await page.goto(BASE, { waitUntil: 'networkidle' })
-  await page.getByRole('heading', { name: /Beginner pathway/i }).waitFor({ timeout: 10000 })
+  await page.getByRole('heading', { name: /Fundamentals/i }).waitFor({ timeout: 10000 })
+  // Only the first category is expanded on load.
+  const collapsedLinks = await page.locator('a[href^="/lesson/"]').count()
+  check(
+    'Categories start collapsed except the first',
+    collapsedLinks > 0 && collapsedLinks < 60,
+    `${collapsedLinks} lesson links visible`,
+  )
+  await page.getByRole('button', { name: /Expand all/i }).click()
   const lessonLinks = await page.locator('a[href^="/lesson/"]').count()
-  check('Home renders curriculum modules', true, `${lessonLinks} lesson links`)
-  check('All 78 lessons present', lessonLinks === 78, `found ${lessonLinks}`)
+  check('Expand all reveals every lesson', lessonLinks === 181, `found ${lessonLinks}`)
+  await page.screenshot({ path: `${SHOTS}/smoke-home.png`, fullPage: false })
 
-  // 2. Lesson page: article + puzzle + games all render.
-  await page.goto(`${BASE}/lesson/b12-forks-pins-skewers-double`, {
-    waitUntil: 'networkidle',
-  })
-  await page.getByRole('heading', { name: /Forks, pins, skewers/i }).waitFor()
+  // 2. Lesson page: video + article + puzzle + games all render.
+  await page.goto(`${BASE}/lesson/${LESSON}`, { waitUntil: 'networkidle' })
+  await page.getByRole('heading', { name: /Knight forks/i }).waitFor()
   const hasBoard = await page.locator('[data-square]').first().isVisible()
   check('Lesson puzzle board renders', hasBoard)
+  const hasVideo = await page
+    .getByRole('button', { name: /Play video/i })
+    .isVisible()
+  check('Curated lesson video renders', hasVideo)
   const gamesCount = await page.locator('a[href*="wikipedia.org"]').count()
-  check('Grandmaster game links render', gamesCount >= 2, `${gamesCount} links`)
+  check('Grandmaster game links render', gamesCount >= 1, `${gamesCount} links`)
 
   // 3. Progressive hint reveals (first puzzle on the page).
   await page.getByRole('button', { name: /Show a hint/i }).first().click()
@@ -52,7 +61,7 @@ try {
   )
   check(
     'Progress written to localStorage',
-    !!stored && stored.includes('b12-forks-pins-skewers-double'),
+    !!stored && stored.includes(LESSON),
     stored ?? 'null',
   )
   await page.reload({ waitUntil: 'networkidle' })
@@ -79,10 +88,24 @@ try {
     await page.waitForTimeout(500)
   }
   check('Stockfish produces an evaluation in-browser', engineOk, depthText)
-  await page.screenshot({ path: `${SHOTS}/smoke-analysis.png`, fullPage: true })
+  // The board should dominate the analysis page, with the info panels below it.
+  const boardBox = await page.locator('[data-square]').first().boundingBox()
+  const board = await page
+    .locator('[data-boardid], [data-square]')
+    .first()
+    .evaluate((el) => {
+      const b = el.closest('div[style*="width"]') ?? el
+      return b.getBoundingClientRect().width
+    })
+  check(
+    'Analysis board fills most of the viewport',
+    board > 400,
+    `board ~${Math.round(board)}px wide, square ${Math.round(boardBox?.width ?? 0)}px`,
+  )
+  await page.screenshot({ path: `${SHOTS}/smoke-analysis.png`, fullPage: false })
 
-  await page.goto(`${BASE}/lesson/b12-forks-pins-skewers-double`)
-  await page.getByRole('heading', { name: /Forks, pins, skewers/i }).waitFor()
+  await page.goto(`${BASE}/lesson/${LESSON}`)
+  await page.getByRole('heading', { name: /Knight forks/i }).waitFor()
   await page.screenshot({ path: `${SHOTS}/smoke-lesson.png`, fullPage: true })
 } catch (err) {
   check('Smoke run completed without exceptions', false, String(err))

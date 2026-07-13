@@ -1,0 +1,60 @@
+---
+slug: fundamentals-when-castling-illegal
+title: "When castling is illegal"
+category: "fundamentals"
+order: 17
+summary: "The five conditions — pieces moved, pieces between, in check, through check, into check — that forbid castling."
+youtubeId: ""
+puzzleIds: []
+games: []
+---
+
+## Overview
+
+Castling is the only move where two of your pieces move at once, and it is the only move with a list of things that can forbid it. Five conditions block it: the king has moved, the rook on that side has moved, a piece stands between them, the king is currently in check, or the king would pass through or land on an attacked square. Learn the five and you will never again reach for the king in a position where castling is not there, and you will start to see when you can take castling away from your opponent.
+
+## The move itself
+
+Castling kingside for White is 1.O-O: the king goes e1 to g1, the rook jumps from h1 to f1. Queenside is 1.O-O-O: the king goes e1 to c1, the rook from a1 to d1. Black mirrors this on the eighth rank — kingside puts the king on g8 and the rook on f8, queenside puts the king on c8 and the rook on d8.
+
+Two details people get wrong. The king always moves exactly two squares, never three, even on the queenside where the rook travels further. And castling counts as a king move, not a rook move: touch the rook first in an over-the-board game and a strict arbiter can make you play a rook move instead. Grip the king.
+
+## Condition one and two: the pieces must never have moved
+
+The king must not have moved at any point in the game, and the rook you are castling with must not have moved either. "Moved and moved back" does not reset it. If you play Ke2 to defend a pawn and later return with Ke1, castling is gone forever, both sides. That is why 1.e4 e5 2.Nf3 Nc6 3.Bc4 Nf6 4.Ng5 d5 5.exd5 Nxd5 6.Nxf7 Kxf7 hurts Black so much: the Fried Liver has dragged the black king to f7 and the rooks will never connect by castling.
+
+The rook rule is one-sided. If your h1 rook has moved but your a1 rook has not, you can still castle queenside. Losing the a1 rook's right does not touch the kingside. Losing your rook entirely — it gets captured on h1 — obviously ends castling on that side too.
+
+Being attacked does not count as moving. A rook on h1 that has been hit by a bishop for ten moves and never budged is still eligible.
+
+## Condition three: the squares between must be empty
+
+Every square between the king and the rook must be vacant. Kingside that means f1 and g1. Queenside it means d1, c1 and b1 — three squares, including b1, which the king never visits but the rook crosses.
+
+<Spoken>Queenside castling needs three empty squares: d1, c1 and b1. Kingside needs only two: f1 and g1.</Spoken>
+
+This is why queenside castling usually takes one extra move to prepare. After 1.d4 d5 2.Nc3 Nf6 3.Bf4 the b1 knight and c1 bishop have both cleared out, but the queen still sits on d1 and blocks the plan. Only after Qd2 does O-O-O become legal.
+
+A stray piece of your own or your opponent's makes no difference — a black knight on f1 blocks White's kingside castling exactly as a white knight would.
+
+## Conditions four and five: check, through check, into check
+
+You may not castle out of check. If your king is attacked, you must deal with the check some other way — block, capture, or step aside — and stepping aside costs you castling forever.
+
+You may not castle through check. Every square the king crosses must be safe. Kingside, that means f1 and g1 must both be free of attack; queenside, d1 and c1. And you may not castle into check, which is just the ordinary rule that no move may leave your king attacked.
+
+Here is the exception people miss most often. The rook is allowed to be attacked, and the rook is allowed to cross an attacked square. Queenside, b1 can be covered by an enemy bishop on a2 or a rook on the b-file and O-O-O is still perfectly legal, because b1 is a rook square, not a king square. Only the king's own path matters.
+
+This gives you a way to fight for the initiative. If your bishop or queen can hit f8 or g8 in time, Black cannot castle short even with everything cleared. A single check on the e-file at the right moment — say a rook landing on e1 with the black king still on e8 — freezes castling for that move, and if the king has to step to d8 to escape, it is frozen for good.
+
+## Common mistakes
+
+- Thinking a king that moved and came back can still castle. It cannot. Once the king leaves e1, both castling rights are gone permanently.
+- Forgetting b1 or b8 must be empty for queenside castling. The rook passes over it even though the king does not.
+- Believing an attacked rook blocks castling. It does not. Only the king's start square and the two squares it crosses or lands on must be safe.
+- Trying to escape a check by castling. Illegal — and the reflex costs beginners real games when they assume the option exists and only then look for something else.
+- Castling automatically as soon as it is legal, into an open file or a wrecked pawn shield. Legal is not the same as good; check what your king is walking toward.
+
+## Practice
+
+Watch the lesson video first, then set up positions on the board at /analysis and try to castle: put a queen on d1 with an empty queenside and see the move refused, then move the queen and see it appear. Use the engine's legal-move highlighting as a rules checker — if the king will not go to g1, work out which of the five conditions is stopping it before you look. Then play a few slow games and, on every move your opponent could castle, ask whether you can attack f8, g8 or e8 and take the right away.

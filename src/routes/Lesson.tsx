@@ -1,7 +1,12 @@
+import { useRef } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { MDXProvider } from '@mdx-js/react'
+import { ArticleAudio } from '../components/media/ArticleAudio'
+import { mdxComponents } from '../components/mdx/audio'
 import { getAdjacentLessons, getLesson } from '../content/lessons'
-import { getPuzzles } from '../content/puzzles'
+import { getCategory } from '../content/curriculum'
+import { getLessonVideo, videoSearchUrl } from '../content/videos'
+import { getLessonPuzzles } from '../content/puzzles'
 import { useProgress } from '../progress/ProgressContext'
 import { YouTubeEmbed } from '../components/media/YouTubeEmbed'
 import { GameLinks } from '../components/media/GameLinks'
@@ -12,6 +17,9 @@ export function Lesson() {
   const lesson = getLesson(slug)
   const { isLessonComplete, markLessonComplete, markLessonIncomplete } =
     useProgress()
+  // The narration reads this element's text, so it has to be declared before
+  // the not-found branch returns — hooks can't run conditionally.
+  const articleRef = useRef<HTMLElement>(null)
 
   if (!lesson) {
     return (
@@ -25,17 +33,17 @@ export function Lesson() {
   }
 
   const { prev, next } = getAdjacentLessons(slug)
-  const puzzles = getPuzzles(lesson.puzzleIds)
+  const puzzles = getLessonPuzzles(lesson)
   const games = lesson.games ?? []
   const complete = isLessonComplete(slug)
   const Article = lesson.Article
+  const category = getCategory(lesson.category)
+  const video = getLessonVideo(lesson)
 
   return (
     <article className="space-y-8">
       <header>
-        <p className="text-sm font-medium text-brand">
-          {lesson.module} · {lesson.stage}
-        </p>
+        <p className="text-sm font-medium text-brand">{category?.name}</p>
         <h1 className="mt-1 text-2xl font-bold sm:text-3xl">{lesson.title}</h1>
         <p className="mt-2 text-neutral-600 dark:text-neutral-400">
           {lesson.summary}
@@ -45,15 +53,23 @@ export function Lesson() {
       {/* Video */}
       <section>
         <h2 className="mb-3 text-lg font-semibold">Video</h2>
-        <YouTubeEmbed videoId={lesson.youtubeId ?? ''} title={lesson.title} />
+        <YouTubeEmbed
+          videoId={video?.id}
+          title={video?.title ?? lesson.title}
+          channel={video?.channel}
+          searchUrl={videoSearchUrl(lesson)}
+        />
       </section>
 
-      {/* Article (MDX body) */}
-      <section className="prose-lesson max-w-none">
-        <MDXProvider>
-          <Article />
-        </MDXProvider>
-      </section>
+      {/* Article (MDX body), with a narration player over it */}
+      <div className="space-y-3">
+        <ArticleAudio articleRef={articleRef} articleKey={lesson.slug} />
+        <section ref={articleRef} className="prose-lesson max-w-none">
+          <MDXProvider components={mdxComponents}>
+            <Article />
+          </MDXProvider>
+        </section>
+      </div>
 
       {/* Puzzles */}
       <section>
@@ -101,7 +117,7 @@ export function Lesson() {
                 ? markLessonComplete(slug)
                 : markLessonIncomplete(slug)
             }
-            className="h-5 w-5 accent-[var(--color-brand)]"
+            className="h-5 w-5 accent-brand"
           />
           <span className="font-medium">
             {complete ? 'Lesson completed' : 'Mark this lesson complete'}

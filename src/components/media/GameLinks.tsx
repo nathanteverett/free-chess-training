@@ -1,10 +1,8 @@
+import { Link } from 'react-router-dom'
+import { getAnnotatedGameForSource } from '../../content/games'
 import type { GameLink } from '../../types'
 
-/**
- * A list of grandmaster games that demonstrate the lesson's idea. Links open in
- * a new tab (Lichess study, chessgames.com, etc.). An embedded PGN viewer can
- * replace the links later without changing the lesson data.
- */
+/** Links wiki-backed games to a local, move-by-move annotated replay. */
 export function GameLinks({ games }: { games: GameLink[] }) {
   if (games.length === 0) {
     return (
@@ -16,14 +14,10 @@ export function GameLinks({ games }: { games: GameLink[] }) {
 
   return (
     <ul className="space-y-2">
-      {games.map((game) => (
-        <li key={game.url}>
-          <a
-            href={game.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-start gap-2 rounded-lg border border-neutral-200 bg-white/60 p-3 transition hover:border-brand hover:bg-brand/5 dark:border-neutral-700 dark:bg-neutral-900/60"
-          >
+      {games.map((game) => {
+        const annotated = getAnnotatedGameForSource(game.url)
+        const content = (
+          <>
             <span className="mt-0.5 text-brand">♟</span>
             <span>
               <span className="font-medium">{game.label}</span>
@@ -32,11 +26,38 @@ export function GameLinks({ games }: { games: GameLink[] }) {
                   {game.note}
                 </span>
               )}
+              {annotated && (
+                <span className="mt-1 block text-xs font-medium text-brand">
+                  Replay {annotated.moves.length} annotated moves on the analysis board
+                </span>
+              )}
             </span>
-            <span className="ml-auto text-neutral-400">↗</span>
-          </a>
-        </li>
-      ))}
+            <span className="ml-auto text-neutral-400">→</span>
+          </>
+        )
+
+        return (
+          <li key={game.url}>
+            {annotated ? (
+              <Link
+                to={`/analysis?game=${annotated.id}`}
+                className="flex items-start gap-2 rounded-lg border border-neutral-200 bg-white/60 p-3 transition hover:border-brand hover:bg-brand/5 dark:border-neutral-700 dark:bg-neutral-900/60"
+              >
+                {content}
+              </Link>
+            ) : (
+              <a
+                href={game.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-2 rounded-lg border border-neutral-200 bg-white/60 p-3 transition hover:border-brand hover:bg-brand/5 dark:border-neutral-700 dark:bg-neutral-900/60"
+              >
+                {content}
+              </a>
+            )}
+          </li>
+        )
+      })}
     </ul>
   )
 }

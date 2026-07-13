@@ -1,0 +1,62 @@
+---
+slug: fundamentals-pawn-captures
+title: "Pawn captures"
+category: "fundamentals"
+order: 13
+summary: "Pawns capture diagonally, which is why they cannot take the piece directly in front of them."
+youtubeId: ""
+puzzleIds: []
+games: []
+---
+
+## Overview
+
+The pawn is the only piece in chess that captures differently from the way it moves. It steps straight forward, but it takes one square diagonally forward. That single split rule is why a pawn can be stopped dead by a piece standing right in front of it, and why two pawns facing each other on the same file are both frozen: neither can move, and neither can capture.
+
+## The rule, exactly
+
+A white pawn on e4 moves to e5 if e5 is empty. It captures on d5 or f5 if a black piece is sitting there. It can never capture on e5, no matter what is standing on that square. A black pawn works as a mirror image: a black pawn on d5 pushes to d4 and captures on c4 or e4.
+
+Notation for a capture puts the pawn's file first, then an x, then the destination square. If the white pawn on e4 takes a black pawn on d5, you write exd5. If it takes on f5, exf5. The file letter matters because two different pawns can often reach the same square, and "exd5" versus "cxd5" tells your reader which one went.
+
+A pawn on the edge has only one capturing diagonal. A pawn on a4 can only take on b5. There is no z-file, so nothing exists to its left. Edge pawns are therefore easier to blockade and less useful as attackers, which is one reason a rook's pawn is often the weakest pawn you own.
+
+Two special cases sit on top of the basic rule. En passant lets a pawn capture an enemy pawn that just jumped two squares past it, landing as if the enemy pawn had only moved one. And promotion applies to captures too: if a white pawn on b7 takes a rook on a8, it lands on a8 and immediately becomes a queen, written bxa8=Q.
+
+## Why a pawn can be blocked
+
+Because the capture is diagonal, a piece directly in front of a pawn is completely safe from it. This is the whole basis of the blockade.
+
+Play 1.e4 e5. Both pawns now stare at each other on the e-file. Neither can capture the other, and neither can advance. They are locked, and they will stay locked until some other piece changes the situation. This is a normal, healthy position, but it teaches the mechanism: a pawn is stopped by anything, even a lowly pawn, sitting on the square in front of it.
+
+The same idea makes knights excellent blockaders. A knight on d6 in front of a white pawn on d5 cannot be attacked by that pawn at all. The pawn's fangs point at c6 and e6, not at d6. Squares directly in front of an enemy pawn are safe squares.
+
+## Captures change the file the pawn lives on
+
+Every pawn capture shifts a pawn sideways by one file. That is worth thinking about before you take, because you are not just winning material, you are redesigning your pawn structure.
+
+Take the Exchange Variation of the Queen's Gambit: 1.d4 d5 2.c4 e6 3.Nc3 Nf6 4.cxd5 exd5. White's c-pawn has left the board, and Black's e-pawn has become a d-pawn, so Black now has doubled coverage of the centre and an open e-file. The capture did not just trade wood, it opened lines and rebuilt both structures.
+
+Compare 1.e4 d5 2.exd5 Qxd5 3.Nc3, where White's capture on d5 gains a tempo later by hitting the queen. In both cases the pawn moved off its home file, and the file it left behind became open.
+
+The rule of thumb worth carrying: capturing toward the centre is usually better than capturing away from it, because it gives you more central pawns and opens a file toward the enemy king. Break it when the alternative recapture keeps your structure healthy or opens a line you actually want to use.
+
+## Pawns as attackers
+
+Because pawns take diagonally, a pawn attacks two squares, and any enemy piece standing on either of them is in real danger. A pawn is worth one point, so a pawn attacking a knight or a bishop is an immediate threat: the piece must move, be defended in a way that makes the trade good, or be lost for almost nothing.
+
+This gives you the pawn fork. If you have a white pawn on e4 and Black has a knight on d5 and a bishop on f5, then e4 attacks both at once. Only one can escape. Play 1.exd5 or 1.exf5 and you win a piece for a pawn.
+
+It also gives you the pawn push that gains time. In many openings you play d4 or e5 precisely to hit a developed enemy piece and make it move again while you gain space.
+
+## Common mistakes
+
+- Trying to capture straight ahead. A pawn on e4 cannot take a piece on e5. If you find yourself wanting to, the answer is to attack e5 with a piece, or to bring a pawn to d4 or f4 so it can take on e5 diagonally.
+- Assuming a defended pawn is safe from another pawn. If your pawn on d5 is guarded once and attacked by a pawn on e4 plus a knight, count again. Attackers versus defenders decides it, and a pawn capture starts the exchange in your opponent's favour.
+- Parking a piece on a square an enemy pawn attacks. Before you place a knight or bishop, look at the two diagonal squares in front of every enemy pawn. If your piece lands on one, you are inviting a free tempo loss.
+- Automatically recapturing away from the centre. When you can retake with either of two pawns, ask which one improves your structure and which file you want opened. Do not just grab with whatever is closer.
+- Forgetting that the capture is forward-only. A white pawn on e4 does not attack d3 or f3. Pawns never take backwards.
+
+## Practice
+
+Watch the lesson video first to see the diagonal capture demonstrated on a board, then work the practice puzzles below and force yourself to name every square each pawn attacks before you move. Replay the linked master games and pause at every pawn capture to ask which file the pawn left and which one it opened. Then set up a blocked pawn pair on /analysis, add a piece, and check with the engine whether your intended capture actually wins material once you have counted attackers and defenders.

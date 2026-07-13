@@ -11,24 +11,48 @@ export interface GameLink {
   note?: string
 }
 
+/** One half-move in a replayable, annotated master game. */
+export interface AnnotatedGameMove {
+  /** Standard algebraic notation, e.g. "Nf3" or "Qb8+". */
+  san: string
+  /** Plain-language purpose or consequence of this move. */
+  explanation: string
+}
+
+/** A complete master game that can be replayed on the analysis board. */
+export interface AnnotatedGame {
+  id: string
+  title: string
+  white: string
+  black: string
+  event: string
+  result: string
+  sourceUrl: string
+  moves: AnnotatedGameMove[]
+}
+
 /**
  * Frontmatter authored at the top of each lesson `.mdx` file. The MDX body
  * (everything below the frontmatter) is the article itself.
+ *
+ * One lesson covers exactly one topic. Titles that used to bundle several ideas
+ * ("Forks, pins, skewers, and double attacks") are split into a lesson each.
  */
 export interface LessonFrontmatter {
-  /** URL slug, unique across all lessons, e.g. "b12-forks-pins-skewers". */
+  /** URL slug, unique across all lessons, e.g. "tactics-knight-fork". */
   slug: string
-  /** Lesson title shown in nav and headings. */
+  /** Lesson title shown in nav and headings — a single topic. */
   title: string
-  /** Name of the module group this lesson belongs to (see curriculum.ts). */
-  module: string
-  /** Rating/stage band label, e.g. "Stage A", "Stage 2". */
-  stage: string
+  /** Id of the skill category this lesson belongs to (see curriculum.ts). */
+  category: string
   /** Global ordering index used to sequence the whole curriculum. */
   order: number
   /** One-sentence summary shown on cards and previews. */
   summary: string
-  /** YouTube video ID (the part after `v=`); empty until provided. */
+  /**
+   * YouTube video ID override. Normally left empty: the lesson's video is
+   * resolved from the curated library in content/videos.ts.
+   */
   youtubeId?: string
   /** IDs of puzzles (see puzzles/*) that practice this lesson. */
   puzzleIds?: string[]
@@ -42,17 +66,18 @@ export interface Lesson extends LessonFrontmatter {
   Article: ComponentType<Record<string, unknown>>
 }
 
-/** A module groups a set of lessons under a stage band. */
-export interface CurriculumModule {
-  /** Stable id/key. */
+/**
+ * A skill category groups lessons by the skill they build. Categories carry no
+ * rating/stage band — they are a subject grouping, not a progression ladder.
+ */
+export interface SkillCategory {
+  /** Stable id/key, matched against each lesson's `category`. */
   id: string
-  /** Display name, e.g. "Beginner pathway". */
+  /** Display name, e.g. "Tactics". */
   name: string
-  /** Rating band label, e.g. "Stage A–C · Unrated–1200". */
-  stage: string
-  /** Short description of what the module covers. */
+  /** Short description of what the category covers. */
   description: string
-  /** Lessons in this module, sorted by order. */
+  /** Lessons in this category, sorted by order. */
   lessons: Lesson[]
 }
 

@@ -1,0 +1,56 @@
+---
+slug: fundamentals-how-knight-moves-captures
+title: "How the knight moves and captures"
+category: "fundamentals"
+order: 8
+summary: "The knight jumps in an L-shape, the only piece that can leap over others."
+youtubeId: ""
+puzzleIds: []
+games: []
+---
+
+## Overview
+
+The knight moves in an L-shape: two squares in one straight direction, then one square at a right angle. It is the only piece that ignores everything in its path, so a knight can leap out from behind a wall of its own pawns on move one. It captures exactly the way it moves, by landing on an enemy piece and replacing it, and because its path is a jump rather than a line, a knight can never be blocked and can never be stopped by a body in between.
+
+## The L, and how to count it
+
+Stand a knight on d4 and count. Two squares up and one across gives you c6 and e6. Two squares down and one across gives you c2 and e2. Two squares left and one up or down gives you b5 and b3. Two squares right gives you f5 and f3. That is eight destinations, the knight's maximum, and it is what a knight in the middle of the board is worth.
+
+<Spoken>A knight on d4 can reach eight squares: c6, e6, c2, e2, b5, b3, f5 and f3.</Spoken>
+
+Two shortcuts help. First, a knight always changes square colour with every move. A knight on a light square lands on a dark square, and the next move puts it back on light. That means a knight can never reach a given square in an even number of moves if the colour parity is wrong, and it means a knight cannot ever attack a square of the colour it currently sits on. Second, from any square the knight's targets form a ring: the eight squares closest to it that are neither on the same rank, file, nor diagonal.
+
+Compare d4 with a1. From a1 the knight has only two moves, b3 and c2. From b1, the starting square, it has three: a3, c3 and d2. The lesson is old and true: a knight on the rim is dim. Every step toward the centre buys the knight more squares.
+
+## Jumping, and what that is worth
+
+At the start of the game, White's pieces are hemmed in by pawns. Bishops, rooks and queen cannot move at all until a pawn steps aside. The knights do not care. 1.Nf3 is a perfectly good first move because the knight simply hops over the pawn on g2 and the pawn on e2.
+
+That jumping ability makes the knight the best piece in a closed, blocked position. When pawn chains lock the board and bishops stare into their own pawns, the knight threads through. It also makes the knight the one piece you cannot defuse by putting something in the way. If a bishop on b5 pins your knight on c6, you can block with a pawn to c6 or interpose on the diagonal. If a knight on g5 hits your f7 square, there is nothing to interpose. You must guard f7, chase the knight, or move.
+
+## How a knight captures
+
+There is no separate capture rule. If an enemy piece stands on one of the knight's eight L-squares, the knight may land there and remove it. Pieces standing between are irrelevant: they are jumped, not captured. A knight on f3 with a black pawn on e5 and a white pawn on e4 in the way still takes on e5 with Nxe5, because "the way" does not exist for a knight.
+
+A concrete opening line makes it real. After 1.e4 e5 2.Nf3, White attacks e5. Black defends it with 2...Nc6. If Black instead plays 2...Nf6, the Petrov, White can grab a pawn with 3.Nxe5, and 3...Nxe4 immediately in reply is a mistake because of 4.Qe2, pinning the knight on e4 and winning material after it moves.
+
+## The fork, the knight's signature blow
+
+Because a knight attacks squares of the opposite colour to the one it stands on, and because those squares fan out in every direction, one knight can hit two or three enemy pieces at once, and none of them can block it. That is a fork.
+
+The pattern beginners meet first is 1.e4 e5 2.Nf3 Nc6 3.Bc4 Nd4, when 4.Nxe5 looks fine but 4...Qg5 wins back the piece with interest. The pattern you must fear is the family fork: a knight landing on a square that hits the king and the queen at the same time. In the Scholar's Mate area, after 1.e4 e5 2.Qh5 Nc6 3.Bc4 g6, the queen on h5 is attacked by the pawn, and Black is fine.
+
+A cleaner illustration is the "smothered" family: with a black king on h8, a black rook on f8, a black pawn on g7 and h7, a white knight arriving on g6 with check has no answer at all, because f8 and h8 are the only escape squares and both are taken. Set that position up on the board and look at it. The knight is the only piece that can deliver mate through a completely sealed pawn shell.
+
+## Common mistakes
+
+- **Miscounting the L.** Players routinely think a knight on f3 attacks e4 or g4. It does not; those are one-square steps. From f3 the knight sees g5, h4, e5, d4, d2, e1, g1 and h2. Recount with the two-then-one rule every single time.
+- **Forgetting the colour flip.** If your knight sits on a light square, it attacks only dark squares this move. An enemy queen on a light square next to it is not under attack. Use the parity as a free safety check.
+- **Developing to the rim.** 1.e4 e5 2.Na3 is legal and bad. The knight has three moves and no future. Play 2.Nf3, where it hits e5, supports d4 and e5, and heads for the centre.
+- **Trying to block a knight.** Interposing works against bishops, rooks and queens, never against knights. When a knight forks you, the answers are: capture it, move the more valuable piece with a counter-threat, or defend the second target.
+- **Trusting a pawn shield.** Pawns stop lines, not jumps. A castled king behind f7, g7 and h7 is still reachable by a knight landing on g5, e6 or f6.
+
+## Practice
+
+Watch the video and follow the knight's tour of the board with your eyes before you touch a piece. Then work through the practice puzzles below, and for each one say out loud which two squares the knight is forking before you play the move. Finally, open /analysis, drop a knight in the centre, and step through the linked master games to see how strong players steer knights toward outposts rather than the edge.

@@ -1,0 +1,66 @@
+---
+slug: fundamentals-castling-kingside-queenside
+title: "Castling: kingside and queenside"
+category: "fundamentals"
+order: 16
+summary: "The one move that shifts two pieces at once, tucking the king away and activating a rook."
+youtubeId: ""
+puzzleIds: []
+games: []
+---
+
+## Overview
+
+Castling is the only move in chess that moves two of your pieces at once. The king steps two squares toward a rook, and that rook jumps over him to the square he crossed. It exists because the king is unsafe in the middle of the board while queens and rooks are still on it, and because your rook is useless sitting in the corner. One move fixes both problems: the king hides behind a wall of pawns, and the rook arrives near the center files where the game is decided.
+
+## The mechanics: what actually moves where
+
+There are two versions. Kingside castling, written O-O, and queenside castling, written O-O-O.
+
+For White, kingside castling sends the king from e1 to g1 and the h1 rook to f1. Queenside castling sends the king from e1 to c1 and the a1 rook to d1. Black mirrors this: kingside, the king goes e8 to g8 and the h8 rook to f8; queenside, the king goes e8 to c8 and the a8 rook to d8.
+
+Notice the asymmetry. Kingside, the king ends on g1 with one pawn-width of space behind him, and the rook lands on f1. Queenside, the king travels the same two squares to c1, but the rook flies further, from a1 all the way to d1. That leaves the b-pawn and the a-pawn slightly loose, and the king a little closer to the open flank. That difference is the whole strategic story of the two castles.
+
+<Spoken>To summarize the geometry: after White castles kingside the king sits on g1 and the rook on f1. After White castles queenside the king sits on c1 and the rook on d1, with the a-pawn left behind and often needing the king to step to b1 later.</Spoken>
+
+## The five conditions
+
+Castling is legal only when every one of these is true.
+
+The king has never moved. The rook you are castling with has never moved. Note that this is about the history of the piece, not its current square: if your h1 rook went to h2 and came back to h1, you have permanently lost kingside castling rights.
+
+All the squares between the king and that rook are empty. Kingside that means f1 and g1. Queenside it means b1, c1 and d1, so the queenside castle needs one more square cleared, which is why it usually takes a move or two longer to prepare.
+
+You are not currently in check. You may not castle out of check.
+
+The king does not pass through an attacked square, and does not land on one. Kingside, f1 and g1 must both be safe. Queenside, d1 and c1 must both be safe. The b1 square does not matter here, because the king never touches it. A common trap in queenside castling positions: if an enemy bishop on a3 or a queen on the a3 to f8 diagonal is hitting c1, you cannot castle long even though the squares are empty. But if a bishop merely attacks b1, castle away.
+
+Crucially, the rook may pass through attack. A black rook or bishop hitting b1 does not stop O-O-O.
+
+## Choosing a side
+
+Castle kingside by default. It is faster, it is safer, and after 1.e4 e5 2.Nf3 Nc6 3.Bc4 Bc5 4.c3 Nf6 5.d3 d6 6.O-O O-O both kings sit behind untouched pawns on f2, g2, h2 and f7, g7, h7. That intact pawn shelter is the single best predictor of king safety in the opening.
+
+Castle queenside when you want the rook on d1 immediately and you intend to attack on the kingside with your pawns. This is the standard recipe in the Sicilian Yugoslav Attack: 1.e4 c5 2.Nf3 d6 3.d4 cxd4 4.Nxd4 Nf6 5.Nc3 g6 6.Be3 Bg7 7.f3 O-O 8.Qd2 Nc6 9.O-O-O. White has castled long, and now the h-pawn is free to charge at Black's king with h4 and h5 without exposing White's own king. Opposite-side castling means both players can throw pawns forward, and the game becomes a race.
+
+The rule of thumb: same-side castling means quiet maneuvering and slow play; opposite-side castling means pawn storms and speed. Decide which game you want before you commit, because castling is irreversible.
+
+## Timing and the exceptions
+
+Castle early, usually inside the first ten moves, and always before you open the center. The classic punishment for delaying is a position where you have grabbed material with the queen while your king still sits on e1 and the e-file cracks open with tempo.
+
+There are real exceptions. If the center is completely locked and cannot be opened, the king is often fine in the middle, and you gain time by not castling. If your opponent has committed to a heavy kingside pawn storm, castling into it is walking into the fire, and you may be better keeping the king on e1 or heading queenside. And sometimes the pawn shelter is already ruined: if your f-pawn and g-pawn have been traded off, castling kingside just puts your king in the draft.
+
+Finally, remember the touch-move detail: when you castle over the board, touch the king first. Touching the rook first can oblige you to make a rook move instead.
+
+## Common mistakes
+
+- Castling into an attack. You castle kingside on autopilot while the opponent has a bishop on the b1 to h7 diagonal, a knight ready for g5, and a queen ready to swing over. Count the attackers on your castled king before you move, not after.
+- Moving the rook or king "just for a second". Rh1 to g1 to eye the g-file, planning to castle later, is not a thing. Castling rights die the moment either piece moves.
+- Thinking the b1 or b8 square must be safe for O-O-O. It does not. Only the king's own path, d1 and c1, must be free of attack. Players routinely decline a perfectly legal long castle for this reason.
+- Immediately shoving the pawns in front of your castled king. After O-O, moves like h3, g4 or f4 without a concrete reason tear open the shelter you just built. Only advance those pawns when you have calculated a purpose.
+- Forgetting that the rook is now on f1 or d1 for a reason. If you castle and then leave the rook idle, you have used the move for half its value. Connect the rooks and put them on open or soon-to-open files.
+
+## Practice
+
+Watch the video first to see both castles executed on a board, including a queenside castle where the b-file square is attacked and castling is still legal. Then work the puzzles on this page, paying attention to positions where the king must castle to survive and to those where castling walks into a tactic. Study the linked master games and note the exact move each player chose to castle, and what was happening in the center at that moment. Finally, open /analysis, set up 1.e4 c5 2.Nf3 d6 3.d4 cxd4 4.Nxd4 Nf6 5.Nc3 g6, play both O-O and O-O-O for White in separate lines, and compare how the engine values the resulting attacking plans.

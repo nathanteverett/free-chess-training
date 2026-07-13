@@ -1,0 +1,64 @@
+---
+slug: fundamentals-attacked-squares
+title: "Attacked squares"
+category: "fundamentals"
+order: 10
+summary: "See which squares the opponent controls, and why the king may not walk onto one."
+youtubeId: ""
+puzzleIds: []
+games: []
+---
+
+## Overview
+
+A square is attacked if an enemy piece could capture something standing on it. That single idea drives most of chess: your king is forbidden from stepping onto an attacked square, checkmate is nothing more than a king in check with every escape square also attacked, and every blunder you have ever made was a piece left standing on a square the opponent attacked. Learning to see attacked squares is learning to see the board.
+
+## What "attacked" actually means
+
+Attack follows movement, with one exception. A rook attacks along its rank and file until a piece blocks it. A bishop attacks its diagonals until a piece blocks it. The queen does both. A knight attacks the eight squares a knight-move away and nothing can block it. The king attacks the eight squares around it.
+
+The exception is the pawn. A pawn moves straight ahead but attacks only diagonally forward. A white pawn on e4 attacks d5 and f5. It does not attack e5 at all, which is why a black king can sit safely on e5 in front of that pawn but cannot step to d5 or f5. Beginners lose games to this asymmetry constantly.
+
+Two more rules. A piece attacks a square whether that square is empty, occupied by an enemy, or occupied by a friend. A white rook on a1 with a white knight on a4 still "attacks" a4 in the defensive sense: it defends the knight. And attack ignores pins for king-safety purposes. Even a pinned piece controls squares the enemy king may not enter.
+
+## Why the king may not walk into fire
+
+The king is never captured. Instead the rules simply forbid moving it to an attacked square, forbid leaving it on one, and forbid castling through one. Check is the state of your king standing on a square the opponent attacks, and you must get out immediately, by moving the king, blocking the line, or capturing the checker.
+
+The practical consequence is that you must count escape squares. Take a bare king on g8 with pawns on f7, g7, h7 after White plays a rook to the eighth rank. The king has no square: f8 and h8 are attacked by the rook, and f7, g7, h7 are its own pawns. That is the back-rank mate, and it exists purely because five of the king's six neighbours are unavailable.
+
+Compare this with stalemate. If it is your move, your king is not attacked, but every square it could go to is attacked and you have no other legal move, the game is drawn. Same visual skill, opposite result. Both are pure attacked-square counting.
+
+## Scanning the board for control
+
+Build a habit: after every opponent move, ask what new squares that move attacks. A knight that hops from f3 to g5 stops attacking d4, e5, and h4, and starts attacking e6, f7, h7, and e4. The most common tactical shot for beginners flows straight out of that scan. After 1.e4 e5 2.Nf3 Nc6 3.Bc4, White has a bishop on c4 and a knight on f3 both aiming at the f7 area. If Black plays carelessly with 3...Nf6 4.Ng5, the f7 square is attacked twice and defended only by the king. That is a real threat because of who attacks what square.
+
+Contrast Scholar's Mate. After 1.e4 e5 2.Bc4 Nc6 3.Qh5 Nf6, White plays 4.Qxf7 checkmate. Look at why. The queen on f7 is defended by the bishop on c4, so the king cannot take it. The king's other squares, e7 and f8, are covered too: the queen on f7 attacks both. Every escape square is attacked, so it is mate. Black's simple fix, 3...g6, does two things: it attacks h5, kicking the queen, and it takes away nothing important.
+
+<Silent>
+| Piece on e4 | Squares attacked |
+| --- | --- |
+| Knight | d2, f2, c3, g3, c5, g5, d6, f6 |
+| Bishop | the two long diagonals through e4 |
+| Pawn (white) | d5 and f5 only |
+</Silent>
+
+<Spoken>A knight on e4 attacks d2, f2, c3, g3, c5, g5, d6 and f6. A bishop on e4 attacks the diagonals running through it. A white pawn on e4 attacks only d5 and f5, and never e5.</Spoken>
+
+## Contested squares and the counting rule
+
+Most squares are attacked by both sides. Before you place a piece on a contested square, count attackers and defenders. If a knight lands on d5 and Black attacks d5 once with a pawn on e6, you need d5 defended at least once to survive, and even then a pawn takes a knight and you have lost material regardless of counts. Value matters, not just numbers: the cheapest attacker sets the price.
+
+This is why pawns are such good square controllers. A pawn on e5 attacks d6 and f6 and costs almost nothing to trade off, so enemy knights simply cannot sit on those squares. Space advantages are really just piles of attacked squares the opponent's pieces are barred from.
+
+## Common mistakes
+
+- Assuming a pawn attacks the square directly in front of it. It never does. A king or a piece can stand safely on a square blocked by a pawn; only the two diagonal squares are dangerous.
+- Moving the king "away" from a checking piece along the same line. If a rook on e1 checks a king on e8, moving to e7 is still illegal. Step off the file, to d8 or f8.
+- Forgetting that a pinned piece still guards squares against the enemy king. A knight pinned to its own queen cannot legally move, but the enemy king still may not step onto the squares it attacks.
+- Counting only the pieces you can see near the king. Long-range bishops and rooks attack from across the board through empty lines. Trace the whole diagonal and the whole file before you decide a square is safe.
+- Grabbing a square because you attack it twice, without checking with what. Two rooks attacking a square defended by one pawn does not mean you win it.
+
+## Practice
+
+Watch the lesson video first, then work the practice puzzles below and make yourself name, out loud, every square the enemy king can and cannot go to before you choose a move. Play through the linked master games and pause after each check to count the escape squares. Then open /analysis, set up a bare king plus a single enemy piece, and try walking the king around the board until the illegal squares become obvious without thinking.

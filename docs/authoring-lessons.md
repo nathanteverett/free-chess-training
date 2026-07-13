@@ -7,15 +7,17 @@ add more puzzles.
 
 ## 1. Anatomy of a lesson file
 
+**One lesson covers one topic.** Don't bundle several ideas into a lesson — a
+title like "Forks, pins, and skewers" should be three lessons.
+
 ```mdx
 ---
-slug: b12-forks-pins-skewers-double     # unique; matches the file name
-title: "Forks, pins, skewers, and double attacks"
-module: "Beginner pathway"               # must match a module in curriculum.ts
-stage: "Stage A–C"                        # rating band label (display only)
-order: 12                                 # global ordering across all lessons
-summary: "Forks, pins, skewers, and double attacks."
-youtubeId: "dQw4w9WgXcQ"                 # YouTube video id (after ?v=)
+slug: tactics-knight-forks               # unique; matches the file name
+title: "Knight forks"                     # a single topic
+category: "tactics"                       # must match an id in curriculum.ts
+order: 37                                 # global ordering across all lessons
+summary: "The hardest fork to see coming, and the reason the knight punches above its weight."
+youtubeId: ""                            # optional override; see §2
 puzzleIds: ["knight-fork-queen"]         # ids from src/content/puzzles
 games:
   - label: "Morphy's Opera Game (Paris, 1858)"
@@ -34,20 +36,37 @@ Write the lesson article here in Markdown. You can use headings, lists,
 | Field       | Required | Notes                                                        |
 | ----------- | -------- | ------------------------------------------------------------ |
 | `slug`      | yes      | Unique; the URL is `/lesson/<slug>`. Keep it matching the filename. |
-| `title`     | yes      | Shown as the page heading and in nav.                        |
-| `module`    | yes      | Must exactly match a `name` in `src/content/curriculum.ts`.  |
-| `stage`     | yes      | Free-text band label, e.g. `"Stage A–C"`, `"Modules 11–20"`. |
+| `title`     | yes      | One topic. Shown as the page heading and in nav.             |
+| `category`  | yes      | Must exactly match an `id` in `src/content/curriculum.ts`, e.g. `tactics`. |
 | `order`     | yes      | Integer; lessons are sorted globally by this.                |
-| `summary`   | yes      | One sentence; shown on cards and at the top of the lesson.   |
-| `youtubeId` | no       | The id after `v=` in a YouTube URL. Empty shows a placeholder. |
+| `summary`   | yes      | One sentence; shown in the category list and at the top of the lesson. |
+| `youtubeId` | no       | Overrides the curated video. Normally left empty — see below. |
 | `puzzleIds` | no       | Array of puzzle ids (see below). Empty shows a note.         |
 | `games`     | no       | List of `{ label, url, note? }`. Empty shows a note.         |
 
+Categories are a **skill grouping, not a rating ladder** — they carry no stage or
+rating band. File a lesson by the skill it builds, so a mating-technique topic
+goes under `endgames` even if a beginner meets it first.
+
 ## 2. Adding the video
 
-Find the video's id — in `https://www.youtube.com/watch?v=ABC123`, the id is
-`ABC123` — and set `youtubeId: "ABC123"`. The embed is lazy (it loads only when
-the user clicks play) and uses the privacy-enhanced `youtube-nocookie` domain.
+Lesson videos come from the curated library in `src/content/videos.ts`, not from
+frontmatter. Add the video to `LIBRARY`, then map the lesson slug to it in
+`LESSON_VIDEOS`. A lesson with no mapping shows a "Search YouTube" card rather
+than an empty player, so it is always safe to leave one unmapped.
+
+**Verify every id before you commit it.** A wrong id renders a dead player:
+
+```bash
+curl -s -o /dev/null -w "%{http_code}\n" \
+  "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=ABC123&format=json"
+# 200 = live, 404 = dead/private — do not ship a 404
+```
+
+To pin a specific video to one lesson without touching the library, set
+`youtubeId: "ABC123"` in its frontmatter; that always wins. The embed is lazy (it
+loads only when the user clicks play) and uses the privacy-enhanced
+`youtube-nocookie` domain.
 
 ## 3. Adding grandmaster games
 
@@ -110,15 +129,79 @@ tagged by theme such as `fork`, `pin`, `backRank`, `mateIn2`):
 to match a lesson, then map each row to the `Puzzle` shape above (the CSV gives
 FEN and the solution moves in UCI). Keep the CC0 attribution in `source`.
 
-## 5. Adding a brand-new lesson
+## 5. Narration (text-to-speech)
 
-Either copy an existing `.mdx` file and edit its frontmatter, or run the
-generator to create any missing stubs from the curriculum:
+Every lesson page has a **Listen** button that reads the article aloud with the
+browser's own speech synthesizer (`SpeechSynthesis`). There are no audio files
+and no API keys: the narration is generated on the reader's device, offline, and
+costs nothing to host.
 
-```bash
-npm run generate-lessons   # idempotent: never overwrites existing lesson files
+The spoken text is read from the **rendered article**, not from the MDX source,
+so it always matches what is on the page — including anything a React component
+renders. You do not write a separate script. You write the article so that it
+works read aloud, and you mark the places where eye and ear need different
+things.
+
+### Notation is spoken for you
+
+`src/audio/notation.ts` rewrites chess notation into words before it reaches the
+synthesizer, so write notation normally:
+
+| Written  | Spoken                          |
+| -------- | ------------------------------- |
+| `Nf3`    | knight to F three               |
+| `Bxh7+`  | bishop takes H seven, check     |
+| `exd5`   | E pawn takes D five             |
+| `e8=Q`   | pawn to E eight promoting to queen |
+| `O-O-O`  | castles queenside               |
+| the `d-file` | the D file                  |
+
+A square named in prose ("control the e4 square") is read as a square, not as a
+move. Never spell notation out phonetically yourself — you would end up with it
+being expanded twice.
+
+### `<Spoken>` and `<Silent>`
+
+Two components are available in every lesson without importing them:
+
+```mdx
+<Silent>
+| Condition        | Why it matters |
+| ---------------- | -------------- |
+| Bishop on d3     | Hits h7        |
+| Knight ready for g5 | Follows the check |
+</Silent>
+
+<Spoken>The three conditions are a bishop bearing down on h7, a knight that can reach g5 in one move, and a queen with a clear path to the h-file.</Spoken>
 ```
 
-New modules must be registered in `src/content/curriculum.ts`
-(`MODULE_DEFINITIONS`) so the module heading and ordering appear on the home
+- **`<Silent>`** is shown but never spoken. Wrap anything that only works
+  visually — a table, an ASCII board, a long bare move list.
+- **`<Spoken>`** is visually hidden but read aloud. Use it to hand the listener
+  what the eye would otherwise supply.
+
+The rule: **a listener who never looks at the screen must get the whole lesson.**
+Anything visual gets a `<Spoken>` sentence that says the same thing in words, and
+phrases like "as you can see below" don't belong in either version.
+
+Most articles need neither component — flowing prose with inline notation already
+reads aloud fine. Reach for them only when the page genuinely shows something the
+narration can't say.
+
+Any component you write can opt out of the audio the same way `<Silent>` does, by
+rendering `data-tts="skip"` on its root element.
+
+## 6. Adding a brand-new lesson
+
+Either copy an existing `.mdx` file and edit its frontmatter, or add the topic to
+the `CATEGORIES` table in `scripts/generate-lessons.mjs` (as a
+`[title, summary]` pair) and run the generator:
+
+```bash
+npm run generate-lessons            # idempotent: never overwrites existing files
+npm run generate-lessons -- --prune # also deletes lessons no longer in the topic list
+```
+
+New categories must be registered in `src/content/curriculum.ts`
+(`CATEGORY_DEFINITIONS`) so the category heading and ordering appear on the home
 page.

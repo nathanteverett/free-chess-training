@@ -1,0 +1,66 @@
+---
+slug: fundamentals-pawn-promotion-underpromotion
+title: "Pawn promotion and underpromotion"
+category: "fundamentals"
+order: 15
+summary: "A pawn that reaches the last rank becomes any piece you choose — usually, but not always, a queen."
+youtubeId: ""
+puzzleIds: []
+games: []
+---
+
+## Overview
+
+A pawn that reaches the last rank becomes any piece you choose — usually, but not always, a queen. Promotion is what makes a single pawn worth fighting for in an endgame: the humblest unit on the board turns into the strongest one, and the whole evaluation flips. Nine times out of ten you take the queen without thinking. The tenth time, a rook or a knight wins and the queen throws the game away, and knowing which case you are in is the point of this lesson.
+
+## The rule, exactly as it works
+
+When a pawn reaches the far rank — the eighth for White, the first for Black — it is immediately replaced by a queen, rook, bishop, or knight of the same colour. Four things people get wrong about this:
+
+You must promote. A pawn cannot sit on the last rank as a pawn. It has no legal moves there, so the rules do not allow it to stay.
+
+You are not limited to captured pieces. If your queen is still on the board, you promote to a second queen anyway. Three, four, five queens are all legal. If a physical set has no spare queen, an upturned rook is a common improvisation, but the piece is a queen the moment you say so.
+
+You can promote by capturing. A pawn on e7 with an enemy rook on d8 may play exd8=Q, and the new queen may give check on the very move it appears. Promotion with check is one of the most common tactical resources in the whole game.
+
+The move is finished when the new piece stands on the square. Under FIDE rules you cannot touch a queen, change your mind, and take a knight instead once you have released it.
+
+## Why the queen is almost always right
+
+A queen is worth about nine points, a rook five, a bishop or knight three. Trading a pawn worth one for a queen worth nine is a swing of eight points. That is not a subtlety, it is a landslide. In a king and pawn endgame, the moment you queen with the enemy king cut off, the game is over: king and queen mate a lone king in a handful of moves.
+
+So the default is absolute. Take the queen unless you can point at a concrete reason not to, and there are only two such reasons: stalemate and check.
+
+## Rook to dodge stalemate: the Saavedra
+
+The Saavedra position, published in 1895 and named after the priest who found the key move, is the cleanest example in chess. White has a king on b6 and a pawn on c6; Black has a king on a1 and a rook on d5.
+
+<Spoken>Set up White king b6, White pawn c6, Black king a1, Black rook d5, with White to move.</Spoken>
+
+Play goes 1.c7 Rd6+ 2.Kb5 Rd5+ 3.Kb4 Rd4+ 4.Kb3 Rd3+ 5.Kc2, and the rook can no longer check. Black tries the last trick: 5...Rd4, so that after the natural 6.c8=Q comes 6...Rc4+!, and White must capture with 7.Qxc4 — leaving the black king on a1 with no legal move and no check. Stalemate. Draw.
+
+The win is 6.c8=R. Now Black cannot force the trade: after 6...Ra4 White plays 7.Kb3, hitting the rook and threatening mate on c1 at the same time. Black must give up the rook. A rook was enough to mate and a queen was too much.
+
+That is the shape of every stalemate-driven underpromotion: your opponent has no moves left, so the piece you need is the one that attacks fewer squares.
+
+## Knight for the check
+
+The other reason to underpromote is that a knight moves in a way no queen can copy. A queen can never give check on a square a knight covers if the geometry is a knight's leap. So when the promotion square sits a knight's move from the enemy king, a new knight can arrive with check — or with a fork — while a new queen would arrive with nothing.
+
+The Lasker trap in the Albin Countergambit is the classic short-game version: 1.d4 d5 2.c4 e5 3.dxe5 d4 4.e3? Bb4+ 5.Bd2 dxe3! 6.Bxb4?? exf2+ 7.Ke2, and now 7...fxg1=N+! Black takes the knight on g1 and promotes to a knight, with check. The king must move, 8.Ke1, and 8...Qh4+ 9.Kd2 Nc6 leaves Black a piece up with a raging attack. A new queen on g1 would simply have been captured by the rook on h1.
+
+The same idea appears constantly in endgames: your pawn is one square from queening, the enemy king and queen sit on squares a knight forks, and e8=N+ wins the queen while e8=Q loses.
+
+Bishop promotion is essentially never the answer — a bishop does nothing a queen cannot do, except stalemate less, and in those rare positions a rook or knight usually does the job better. Treat it as a curiosity.
+
+## Common mistakes
+
+- **Queening on autopilot when the enemy king has no moves.** Before you take the queen, ask one question: does my opponent have a legal move afterwards? If the answer is no and it is not mate, you have just drawn. Count Black's replies before you press the clock.
+- **Missing promotion with check.** Players look at their pawn on the seventh and calculate the queen appearing quietly. Check whether the new piece lands with check or attacks a loose piece — that tempo is often what makes the whole line work.
+- **Racing without counting.** In a pawn race, promoting one move earlier is worth more than any piece choice. Count the moves for both sides first, then worry about what to promote to. If you queen first with check, you often stop the opponent's pawn entirely.
+- **Forgetting the new queen can be forked or skewered.** A brand-new queen on a1 or h8 in the corner is exposed. Look at what your opponent hits it with before you commit.
+- **Refusing to make a second queen.** There is no rule against two queens and no reason to be shy. Take it.
+
+## Practice
+
+Watch the video for the Saavedra and the knight-check patterns played out on a board. Then work the puzzles below — in each one, ask yourself first whether the enemy king still has a legal move, and second whether a knight lands with check, before you reach for the queen. Replay the linked master games to see promotion threats shaping the whole endgame, not just the last move. Finally, set the Saavedra position up in the engine at /analysis and play 6.c8=Q against it to watch the evaluation drop to zero, then take it back and play 6.c8=R.

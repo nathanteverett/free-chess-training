@@ -1,0 +1,62 @@
+---
+slug: fundamentals-how-king-moves
+title: "How the king moves"
+category: "fundamentals"
+order: 9
+summary: "The king steps one square in any direction — and can never move into check."
+youtubeId: ""
+puzzleIds: []
+games: []
+---
+
+## Overview
+
+The king moves exactly one square at a time, in any of the eight directions: up, down, left, right, and the four diagonals. That is the whole movement rule. The part that actually shapes the game is the restriction: the king may never step onto a square that an enemy piece attacks, and may never stay on an attacked square when it is your turn. The king is the only piece that cannot be captured, and every rule about it exists to keep it that way.
+
+## The eight squares around the king
+
+Put a white king on e4 on an empty board. It can go to d3, e3, f3, d4, f4, d5, e5 or f5. Eight squares, one step each, no jumping, no sliding further. A king on e4 cannot reach e6 in one move even though nothing is in the way.
+
+That count drops fast at the edge. A king on a1 has only three legal steps: a2, b1 and b2. A king on e1, the starting square, has five: d1, f1, d2, e2, f2 — though at move one every one of those is occupied by its own army, so the king literally cannot move.
+
+<Spoken>Remember the numbers: a king in the middle of the board touches eight squares, a king on an edge touches five, and a king in a corner touches only three.</Spoken>
+
+The king captures the same way it moves. If a black pawn sits on d5 and it is defended by nothing, your king on e4 can play Kxd5 and take it. The capture is legal only because the pawn was undefended. If a black knight on f6 were guarding d5, then Kxd5 would put your king on an attacked square, and that is illegal — you simply are not allowed to play it. The move does not exist.
+
+## You cannot move into check
+
+A square that an enemy piece attacks is off limits to your king, whether or not the enemy piece could realistically capture. This is not a piece of advice. It is a rule of the game, enforced the same way as "bishops move diagonally".
+
+Say Black has a rook on h5 and your king stands on e4. The rook attacks the entire fifth rank, so d5, e5 and f5 are all forbidden. Your king is confined to d3, e3, f3, d4 and f4. Nothing has to happen for this to be true — the rook does not need to move, and Black does not need to threaten anything. The squares are just gone.
+
+The same logic covers pawns, which attack diagonally forward. A black pawn on e5 attacks d4 and f4, so it takes two more squares away from your king on e4 even though the pawn cannot capture straight ahead. Beginners lose games to this constantly: they see the pawn in front of the king and forget the pawn owns the squares beside it.
+
+Two kings can therefore never stand next to each other. A white king on e4 and a black king on e6 is legal; e5 for either of them is not, because each king "attacks" the eight squares around it. This mutual repulsion is why king and rook can force mate but king and bishop cannot.
+
+## Check, and the three ways out
+
+When an enemy piece attacks your king, you are in check. You must answer it immediately — you may not ignore it, and any move that leaves your king attacked is illegal. There are exactly three ways to respond.
+
+Move the king to a safe square. Capture the checking piece. Or block the line between the checker and the king. Only the first works against a knight or a pawn check, because you cannot block a knight's jump or a contact check.
+
+Look at the Scholar's-mate setup: 1.e4 e5 2.Bc4 Nc6 3.Qh5 Nf6 4.Qxf7 is mate. Black's king on e8 is attacked by the queen on f7, which is defended by the bishop on c4. Black cannot capture the queen with the king, because the bishop guards it. Black cannot block, because the queen is touching the king. And the king cannot run: d8 and f8 are covered by his own pieces, e7 is attacked by the queen. Three escapes, all closed. That is checkmate.
+
+Now take the bishop away. With a white queen on f7 and no bishop on c4, the same position is not mate at all: the king plays Kxf7 and White has thrown away a queen. The mate depends entirely on the defended square, not on the queen being scary.
+
+## Why the one-square king matters in the endgame
+
+Because the king cannot be traded, it becomes a fighting piece once the queens come off. One square at a time sounds feeble, but a centralized king in an endgame is roughly as strong as a minor piece, and it is the only piece that can escort a pawn to promotion and shoulder the enemy king away at the same time.
+
+The most important consequence of the one-step rule is the concept of opposition. White king on e5, black king on e7, Black to move: the kings are two squares apart on a file with one square between them. Black must give ground. If Black plays Kd7, White plays Kf6 and gains territory; if Kf7, White plays Kd6. The side who does not have to move controls the standoff. This single geometric fact decides an enormous number of king-and-pawn endings.
+
+## Common mistakes
+
+- Walking the king next to an enemy pawn. Pawns capture diagonally, so a black pawn on d5 makes both c4 and e4 illegal for your king. Always check the pawn's two forward diagonals, not the square directly in front of it.
+- Grabbing an undefended-looking piece with the king. Before you play Kxd5, ask what is defending d5. A single distant bishop on a8 is enough to make the capture illegal.
+- Answering a knight check by blocking. You cannot block a knight — it jumps. Against a knight check, you must move the king or capture the knight, and nothing else.
+- Leaving the king on the back rank in an endgame. After the queens trade, bring the king out. A king sitting on g1 while the action happens on the queenside is a piece you are not using.
+- Trying to place your king adjacent to the enemy king. Kings can never touch. If you cannot see why a move is illegal in an endgame, count the squares the enemy king covers.
+
+## Practice
+
+Watch the lesson video first to see the king's eight steps demonstrated on a board, then work the practice puzzles below — most will hinge on spotting which escape squares are genuinely available and which are covered. Open /analysis, drop a lone king in the centre against a rook or a pair of pawns, and try to move it onto an attacked square: the engine will simply refuse, which is the fastest way to build the instinct. Finish by replaying any linked master game to its endgame and watching how the winning side's king marches up the board once the queens disappear.

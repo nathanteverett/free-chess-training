@@ -18,7 +18,11 @@ export function Layout() {
       <header className="sticky top-0 z-10 border-b border-neutral-200 bg-white/90 backdrop-blur dark:border-neutral-800 dark:bg-neutral-950/90">
         <div className="mx-auto flex max-w-5xl items-center gap-4 px-4 py-3">
           <Link to="/" className="flex items-center gap-2 font-bold">
-            <span className="text-xl text-brand">♞</span>
+            <img
+              src="/pieces/white-knight.png"
+              alt=""
+              className="h-7 w-7 rounded bg-brand-dark p-0.5 [image-rendering:pixelated]"
+            />
             <span>Free Chess Training</span>
           </Link>
           <nav className="ml-auto flex items-center gap-1">
@@ -38,14 +42,6 @@ export function Layout() {
               }
             >
               Analysis board
-            </NavLink>
-            <NavLink
-              to="/reference"
-              className={({ isActive }) =>
-                `${navItem} ${isActive ? navActive : navIdle}`
-              }
-            >
-              Full reference
             </NavLink>
           </nav>
         </div>

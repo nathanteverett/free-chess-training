@@ -1,0 +1,68 @@
+---
+slug: fundamentals-starting-position
+title: "The starting position"
+category: "fundamentals"
+order: 3
+summary: "Place all sixteen pieces correctly, including the queen-on-her-own-color rule."
+youtubeId: ""
+puzzleIds: []
+games: []
+---
+
+## Overview
+
+Every game of chess begins from the same fixed arrangement of thirty-two pieces, and setting it up is not a matter of taste. The board has a light square in the near right-hand corner, the back rank runs rook, knight, bishop, queen, king, bishop, knight, rook, and the pawns fill the rank in front. The one detail that trips up almost everyone is the queen: she starts on a square of her own color, which puts the white queen on d1 and the black queen on d8. Get the setup wrong and every opening idea you ever learn will be pointing at the wrong squares.
+
+## Orienting the board
+
+Turn the board so that the square nearest your right hand is light. "Light on the right" is the whole rule. If you get this backwards, the entire coordinate grid flips and h1 ends up dark, which is impossible.
+
+Once the board is oriented, the files run a to h from White's left to White's right, and the ranks run 1 to 8 from White's side to Black's. White's back rank is rank 1; Black's is rank 8. White's pawns live on rank 2, Black's on rank 7. Both players see the same square names — e4 is e4 no matter which side of the table you sit on.
+
+Two corner squares are worth memorizing forever: a1 is dark and h1 is light. From those two anchors you can rebuild the whole color pattern in your head, which is why strong players can talk about "the a1 to h8 diagonal" without looking at anything.
+
+## The back rank, outside in
+
+Build the first rank from the corners inward and you will never misplace a piece.
+
+The rooks go in the corners: a1 and h1 for White, a8 and h8 for Black. Next to each rook goes a knight, on b1 and g1 for White, b8 and g8 for Black. Next to each knight goes a bishop, on c1 and f1 for White, c8 and f8 for Black. That leaves the two central squares of the back rank, d1 and e1, for the queen and king.
+
+<Silent>
+| Square | White piece | Square | Black piece |
+| --- | --- | --- | --- |
+| a1 / h1 | Rooks | a8 / h8 | Rooks |
+| b1 / g1 | Knights | b8 / g8 | Knights |
+| c1 / f1 | Bishops | c8 / f8 | Bishops |
+| d1 | Queen | d8 | Queen |
+| e1 | King | e8 | King |
+</Silent>
+
+<Spoken>Reading White's first rank from a1 across to h1: rook, knight, bishop, queen, king, bishop, knight, rook. Black's eighth rank uses the same letters, so the two queens face each other down the d-file and the two kings face each other down the e-file.</Spoken>
+
+Notice the consequence: the queens stare at each other on the d-file and the kings on the e-file. The pieces are mirrored across the middle of the board, not rotated. If you find your king on d1 and your opponent's on e8, someone has set up from the wrong side.
+
+## Queen on her own color
+
+The queen takes the back-rank square that matches her color. The white queen is a light piece and d1 is a light square, so she stands there. The black queen is a dark piece and d8 is a dark square, so she stands there. The king takes the square that is left over, e1 for White and e8 for Black, and he always ends up on the opposite color from his own queen: e1 is dark, e8 is light.
+
+This is a genuine rule of chess, not a superstition. If you swap the king and queen, castling breaks. Castling kingside is written O-O and moves the king two squares toward the h-file rook; that only works if the king actually starts on e1 or e8. A game played from a mirrored setup is not a legal chess game.
+
+## Why the setup shapes the opening
+
+Look at what is blocked at move one. Every bishop and both queens are hemmed in by their own pawns; only the knights can move immediately, which is why 1.Nf3 is a real opening move and 1.Bc4 is not.
+
+That is the whole reason the first move is usually a center pawn. After 1.e4, the pawn on e2 leaves e1's diagonal, and suddenly the f1 bishop can travel to c4 or b5 and the d1 queen can reach h5, e2, g4 or f3. After 1.d4, the c1 bishop is freed along the c1 to h6 diagonal and the queen gains the d-file's lower half.
+
+Play out the Italian Game and you can see the geometry the starting position hands you: 1.e4 e5 2.Nf3 Nc6 3.Bc4. The knight came out from g1, the bishop came out from f1 the moment the e-pawn moved, and it now aims at f7 — a square defended only by Black's king on e8. Every one of those facts is a direct consequence of where the pieces stood before a single move was played.
+
+## Common mistakes
+
+- Setting the board with a dark square on the right. Turn the board a quarter turn so the near right corner is light. Otherwise a1 becomes light and every square name you learn is wrong.
+- Swapping the king and queen. Say "queen on her own color" out loud as you place her: white queen on light d1, black queen on dark d8. The king takes the remaining square, e1 or e8.
+- Rotating Black's back rank instead of mirroring it. Black's rooks are still on the a- and h-files, the knights still on b8 and g8. If the black queen ends up on e8, the rank was reversed.
+- Putting the bishops next to the king and queen and the knights beside them. The order outward from the center is bishop, knight, rook. Build from the corners in and you cannot get it wrong.
+- Assuming the board coordinates flip when you play Black. They do not. e4 is the same physical square for both players; only your viewing angle changes.
+
+## Practice
+
+Watch the lesson video and set up a real board alongside it, naming each square out loud as you place the piece. Then open the engine at /analysis, which always starts from the correct position: play 1.e4 e5 2.Nf3 Nc6 3.Bc4 and trace which pieces became free and why, then take the moves back and try 1.d4 to see the other bishop open up. Finish by scrambling a physical board and rebuilding it from memory in under thirty seconds, checking the corners and the queen's color every time.

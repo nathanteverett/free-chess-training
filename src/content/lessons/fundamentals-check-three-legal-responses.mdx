@@ -1,0 +1,58 @@
+---
+slug: fundamentals-check-three-legal-responses
+title: "Check and the three legal responses"
+category: "fundamentals"
+order: 11
+summary: "When your king is attacked you must move it, block the check, or capture the checking piece."
+youtubeId: ""
+puzzleIds: []
+games: []
+---
+
+## Overview
+
+Check means an enemy piece attacks your king. You are not allowed to ignore it, and you are not allowed to make any move that leaves your king attacked. There are exactly three ways out: move the king to a safe square, block the checking line with another piece, or capture the checking piece. If none of the three exists, the check is checkmate.
+
+## The three responses, one at a time
+
+Take the Italian Game: 1.e4 e5 2.Nf3 Nc6 3.Bc4 Bc5 4.c3 Nf6 5.d4 exd4 6.cxd4 Bb4+. The black bishop on b4 attacks the white king on e1 along the b4-c3-d2-e1 diagonal, which is now empty because both pawns have left it.
+
+Run the checklist. Can White capture the bishop on b4? No white piece attacks b4, so that door is closed. Can White block? Yes, twice over: 7.Bd2 blocks on d2 and 7.Nc3 blocks on c3 — both are real main lines. Can the king move? 7.Kf1 is legal, and it is legal precisely because f1 is not attacked. It is also terrible, because White gives up castling for nothing. Three responses, two of them available, one of them clearly best.
+
+That is the habit to build. When you are checked, do not grab the king out of reflex. Ask capture, block, move — in that order, because capture and block usually keep your king where it belongs.
+
+## Why the king move is the pickiest option
+
+A king may never step onto a square attacked by an enemy piece, and that includes squares attacked by a pawn, by the enemy king, or by a piece that seems pinned. There is no such thing as an illegal-because-pinned defender when it comes to controlling squares: a knight that is pinned to its own queen still stops your king from landing next to it.
+
+The trap beginners fall into is retreating along the checking line. If a rook on e8 checks your king on e1 down the open e-file, then e2, e3 and every other e-square is still on that same file. Stepping from e1 to e2 does not escape the rook. You must step sideways, to d1 or f1, or off the line entirely. The same holds for a bishop or queen on a diagonal: back away along the diagonal and you are still in check.
+
+Capturing the checker with the king is allowed, but only when the checking piece is directly next to your king and undefended. If a knight lands on g3 next to your king on h2 and a pawn on f2... no — if that knight is protected by anything at all, taking it is simply illegal, because your king would still be attacked after the capture.
+
+## Blocking, and what cannot block
+
+Only sliding checks can be blocked: rook, bishop and queen checks along a file, rank or diagonal with at least one empty square between the attacker and your king. A knight check can never be blocked, because a knight jumps. A pawn check and a contact check from a piece standing right next to your king cannot be blocked either. Against those, your only options are capture the checker or move the king.
+
+Blocking has one more catch. The blocker must actually be able to go there legally. A piece that is itself pinned to your king cannot leave its line to interpose, and a piece that is nailed to the defence of the same square is often just a new target: block with a piece the opponent can win, and you have traded a check for a lost game.
+
+## Double check: the exception that eats the rules
+
+If two pieces give check at once, blocking and capturing both fail, because you can only deal with one attacker per move. Against a double check the king must move. Full stop.
+
+Réti–Tartakower, Vienna 1910, is the classic demonstration. After 1.e4 c6 2.d4 d5 3.Nc3 dxe4 4.Nxe4 Nf6 5.Qd3 e5 6.dxe5 Qa5+ 7.Bd2 Qxe5 8.O-O-O Nxe4, White played 9.Qd8+, and Black had to take with 9...Kxd8. Now comes 10.Bg5+, which uncovers the rook on d1 while the bishop also hits d8. Two checkers.
+
+<Spoken>The black king on d8 is checked at the same time by the bishop on g5 and by the rook on d1 down the open d-file.</Spoken>
+
+Nothing can block both lines, nothing can capture both pieces, so the king must run — and it has nowhere good to go. 10...Kc7 11.Bd8 is mate, and 10...Ke8 11.Rd8 is mate.
+
+## Common mistakes
+
+- Retreating along the line of the check. Against a rook on e8 checking your king on e1, moving to e2 leaves you in check and is illegal. Step off the file, to d1 or f1.
+- Blocking with a pinned piece, or trying to block a knight or pawn check. Neither is legal. Knight and contact checks can only be answered by capture or king move.
+- Capturing a defended checker with the king. If the piece next to your king is protected, taking it is not a legal move at all — find another answer.
+- Answering a double check with a block or a capture. Only a king move is legal. Look for the flight squares first, and if there are none, it is mate.
+- Panicking and moving the king when a capture or a block was better. The king move is usually the option that costs you castling rights or drags your king forward. Check capture and block first.
+
+## Practice
+
+Watch the lesson video, then work the practice puzzles on this page with the checklist out loud: capture, block, move. In every position where you are checked, force yourself to name all three candidates before you play one. Then replay the linked master games and pause at each check, guessing the defender's reply before you see it. Finally, set positions up in the engine at /analysis and try the losing answers on purpose — the board will simply refuse the illegal ones, which is the fastest way to learn what "legal" really means.

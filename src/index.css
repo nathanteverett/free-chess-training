@@ -3,12 +3,22 @@
 /*
   Theme tokens for the app. Tailwind v4 reads these @theme values and generates
   matching utility classes (e.g. bg-board-light). Keep the palette small.
+
+  The palette is sampled from the pixel-art pieces in icons/pixel-art-fct: the
+  white set is an icy blue (#ecf4fb highlights down to #9ec9fb shading) and the
+  black set a violet-charcoal (#18151c up to #261e27). Board squares sit between
+  the two sets so both read clearly: a pale periwinkle light square and a deep
+  indigo dark square.
 */
 @theme {
-  --color-board-light: #ebecd0;
-  --color-board-dark: #779556;
-  --color-brand: #4a7c2f;
-  --color-brand-dark: #3a6124;
+  --color-board-light: #cfdcf3;
+  --color-board-dark: #5d6ba4;
+  --color-board-highlight: rgba(59, 111, 190, 0.45);
+  --color-brand: #3b6fbe;
+  --color-brand-dark: #2b3f6b;
+  /* Piece-set anchors, reused for surfaces and accents. */
+  --color-ice: #dde6fb;
+  --color-ink: #1a131e;
 }
 
 :root {
@@ -74,7 +84,7 @@ body {
   text-decoration: underline;
 }
 .prose-lesson code {
-  background: rgba(120, 149, 86, 0.15);
+  background: rgba(59, 111, 190, 0.15);
   padding: 0.1rem 0.3rem;
   border-radius: 0.25rem;
   font-size: 0.9em;

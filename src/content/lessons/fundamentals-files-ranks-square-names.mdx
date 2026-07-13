@@ -1,0 +1,56 @@
+---
+slug: fundamentals-files-ranks-square-names
+title: "Files, ranks, and square names"
+category: "fundamentals"
+order: 2
+summary: "Read any square on the board: files a–h, ranks 1–8, and the coordinate that names each square."
+youtubeId: ""
+puzzleIds: []
+games: []
+---
+
+## Overview
+
+Every one of the 64 squares has a unique two-character name, built from a letter and a number. The letters a through h label the eight columns, called files, running from White's left to White's right. The numbers 1 through 8 label the eight rows, called ranks, counting up from White's side of the board. Put them together and you get e4, g7, a1 — the coordinate system that every chess book, every website, and every conversation about chess depends on.
+
+## Files, ranks, and how the grid is oriented
+
+A file is a vertical column of eight squares. It runs away from you toward your opponent. The files are lettered from a to h, and the a-file sits on White's left-hand side. A rank is a horizontal row of eight squares, stretching from side to side. The ranks are numbered 1 to 8, and rank 1 is the row nearest White.
+
+That orientation is fixed. It does not flip when you play Black. Black's back row is still the 8th rank, and Black's queenside rook still starts on a8. If you are sitting behind the black pieces, rank 1 is the row furthest from you and the a-file is on your right. The names belong to the board, not to the player.
+
+One check gets the board set up correctly: the square nearest each player's right hand must be light. h1 is light for White, a8 is light for Black. If your bottom-right corner is dark, the board is turned the wrong way.
+
+<Spoken>Here is the key fact to hold onto: the coordinate grid never rotates. White's back row is always rank one, Black's back row is always rank eight, and the a-file is always on White's left.</Spoken>
+
+## Naming a square
+
+To name a square, take its file letter first, then its rank number. Always in that order — file, then rank. Never "4e"; it is e4.
+
+Walk it yourself. Find White's king in the starting position. It is on the e-file, on the first rank, so it stands on e1. Black's king mirrors it on e8. White's queen sits on d1 and Black's on d8, which is where the phrase "queen on her own color" comes from: d1 is a light square and the white queen is light-colored; d8 is dark, and the black queen is dark.
+
+Now run through the rest of White's back rank left to right: rook a1, knight b1, bishop c1, queen d1, king e1, bishop f1, knight g1, rook h1. Every white pawn stands directly in front of one of these, on the second rank: a2, b2, c2, and so on through h2. Black's pieces occupy the eighth rank in exactly the same order, and Black's pawns fill the seventh.
+
+## Reading square colors without looking
+
+Square color follows a simple parity rule. Give each file a number: a is 1, b is 2, c is 3, d is 4, e is 5, f is 6, g is 7, h is 8. Add that number to the rank number. If the sum is even, the square is dark. If the sum is odd, the square is light.
+
+Test it. e4: e is 5, plus 4 makes 9, odd, so e4 is light. h1: 8 plus 1 is 9, odd, light — which matches the "light square on your right" rule. c3: 3 plus 3 is 6, even, dark. This matters more than it sounds. A bishop that starts on c1 is a dark-squared bishop and will live on dark squares for the entire game; it can never touch e4 no matter how many moves you give it.
+
+## Why coordinates are the language of chess
+
+Once you can name squares instantly, notation stops being code and starts being speech. The move 1.e4 means the pawn goes to e4 — you do not even need to be told which pawn, because only one can get there. After 1.e4 e5 2.Nf3, the knight from g1 lands on f3 and attacks the pawn on e5. Black defends with 2...Nc6, bringing the b8 knight to c6. White then plays 3.Bc4, putting the bishop from f1 on the a2–g8 diagonal, where it stares at f7 — the one square in Black's camp defended only by the king.
+
+Whole ideas are named by coordinates. "Rooks belong on open files" means a rook on a file with no pawns, like a rook lifted to the d-file after the d-pawns trade. "The seventh rank" means a rook sitting on your opponent's pawn row, chewing through it. The fastest checkmate in chess, Fool's Mate, reads 1.f3 e5 2.g4 Qh4 mate: White's two pawn moves open the e1–h4 diagonal, and the black queen walks down it. You cannot see why that works until h4 and e1 are places to you, not symbols.
+
+## Common mistakes
+
+- Writing the rank before the file, as in "4e" or "1h". The file letter always comes first. Say the letter, then the number, every single time until it is automatic.
+- Flipping the coordinates when you play Black. Many beginners decide that the row in front of them is rank 1. It is not — it is rank 7 or 8. The grid is anchored to White's side permanently.
+- Setting the board up with a dark square in the bottom-right corner. Check h1 before every game: right-hand corner light.
+- Counting the files from the wrong side. The a-file is on White's left. If you are looking at the board from White's seat and reading a to h right-to-left, every square name you produce will be mirrored.
+- Confusing "file" and "rank." Files are vertical and lettered; ranks are horizontal and numbered. A useful hook: files are like files in a cabinet, standing upright.
+
+## Practice
+
+Watch the lesson video below to see the grid drawn out, then open the board at /analysis and test yourself: name a square out loud, click it, and check that the coordinate matches. Do this with the board flipped to Black's view as well, since that is where mistakes hide. Then play the opening moves 1.e4 e5 2.Nf3 Nc6 3.Bc4 on the engine board and say the source and destination square of each move aloud before you make it — a1 to h8, you should be able to place any square in under a second.

@@ -1,0 +1,70 @@
+# Builds the static site and publishes it to GitHub Pages.
+#
+# The live-game Worker is NOT deployed from here — it is a separate Cloudflare
+# deploy (`npx wrangler deploy`), because the site ships a 39 MB Stockfish
+# network that is far over Cloudflare's asset limit. The site talks to it
+# cross-origin via VITE_LIVE_SERVER_URL; see src/live/api.ts.
+#
+# Before the first run:
+#   1. Settings → Pages → Source: "GitHub Actions".
+#   2. Settings → Secrets and variables → Actions → Variables, add
+#      LIVE_SERVER_URL = https://free-chess-training-live.<subdomain>.workers.dev
+#      (skip it and everything works except live play).
+#   3. Set the Worker's ALLOWED_ORIGINS var to this site's origin, or its CORS
+#      check will reject the browser: npx wrangler deploy --var ALLOWED_ORIGINS:https://<user>.github.io
+name: Deploy site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let a running deploy finish rather than cancelling it half-published.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # `npm ci` runs the postinstall hook, which copies the Stockfish engine
+      # and its NNUE network out of node_modules into public/ — they are
+      # gitignored, not committed, so the build must generate them here.
+      - run: npm ci
+
+      - run: npm test
+
+      - run: npm run build
+        env:
+          # Project pages are served from /<repo>/. If you move the site to a
+          # custom domain, drop this and the base path becomes "/".
+          BASE_PATH: /${{ github.event.repository.name }}/
+          VITE_LIVE_SERVER_URL: ${{ vars.LIVE_SERVER_URL }}
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

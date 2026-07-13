@@ -1,259 +1,147 @@
 import type { Lesson } from '../types'
 
-/**
- * Curated lesson videos.
- *
- * Every id in LIBRARY was checked against YouTube's oembed endpoint
- * (https://www.youtube.com/oembed?url=…) and resolved to a live video, so no
- * lesson renders a dead player. Titles and channels are the ones oembed
- * returned — if you swap an id, re-verify it the same way.
- *
- * Not every topic has a curated video yet. Those lessons fall back to a
- * prepared YouTube search (see videoSearchUrl) instead of an empty embed.
- */
+/** A focused YouTube Short for each lesson that has a curated video. */
 export interface CuratedVideo {
-  /** YouTube video id (the part after `v=`). */
+  /** YouTube video id (the part after `/shorts/`). */
   id: string
-  /** Video title, as reported by oembed. */
+  /** Video title as shown to the learner. */
   title: string
-  /** Uploading channel, as reported by oembed. */
-  channel: string
-}
-
-const LIBRARY = {
-  // — Rules and basics —
-  rulesKid: { id: 'YdnvlntAQH8', title: 'How to Play Chess: Chess Rules for Beginners', channel: 'ChessKid' },
-  rules8min: { id: 'IU6k-4rKf-g', title: 'Learn How to Play Chess for Beginners in Less Than 8 Minutes', channel: 'Mr.Animate' },
-  rulesAll: { id: 'ej_fnsdsksA', title: 'How To Play Chess: Learn All The Rules Of The Royal Game', channel: 'Chess.com' },
-  enPassant: { id: 'c_KRIH0wnhE', title: 'En Passant | How to Play Chess', channel: 'Chess.com' },
-  specialMoves: { id: '0EqJeujhrpM', title: 'Special moves: promotion, castling, and en passant', channel: 'NM Robert Ramirez' },
-  specialMoves8: { id: 'lvKbpmF7tYI', title: 'Every Special Move in Chess Explained in 8 minutes!', channel: 'Know Chess' },
-  hiddenRules: { id: 'w1-vtOlm4qI', title: 'The "Hidden" Rules Of Chess: Castling, En Passant & Draws', channel: 'Gouda Chess' },
-  stalemate: { id: 'Km6UKZJjPnI', title: 'What is a Stalemate in Chess?', channel: 'You Me And Chess' },
-  drawStalemate: { id: 'rjHCE3UQY8w', title: 'Draw and Stalemate in Chess Explained', channel: 'Mr.Animate' },
-
-  // — Tactics —
-  matePatterns: { id: 'AdLPGGT7rhA', title: 'CHECKMATE Like a PRO! (Checkmate patterns ep 1)', channel: 'Shaky Chess' },
-  rookMate: { id: 'R0gzvT0IO0M', title: 'How to Checkmate with King and Rook', channel: 'ChessNetwork' },
-  tacticsMustKnow: { id: 'kcxBucFaosc', title: 'Chess Tactics You MUST Know (Pin, Fork, Skewer, & More!)', channel: 'Chess Strategy' },
-  forksPinsSkewers: { id: 'MbMslp2WcI0', title: 'The Chess Tactics Guide For Beginners: forks, pins, skewers', channel: 'Chess Vibes' },
-  forksPinsSkewers2: { id: 'k3b7kId3tmE', title: 'Forks, Pins and Skewers in chess explained', channel: 'Chess Gaja' },
-  pinsForksSkewers3: { id: '6DNc2I3RrKI', title: 'Pins, Forks, and Skewers in Chess', channel: 'Lila Teaches' },
-  everyTactic: { id: 'Pl4dZ5bvGg4', title: 'Every Chess Tactic Explained — Fork, Pin, Skewer and More', channel: 'About Chess' },
-  discovered: { id: 'XTNplr3nwck', title: 'Discovered Attack — Concepts, Principles and Examples', channel: 'Chess Vibes' },
-  discovered2: { id: 'nMADfn1scbI', title: 'Creating Multiple Threats with the Discovered Attack', channel: 'Chessfactor' },
-  discovered3: { id: 'eOsf0RqYDuY', title: 'Chess Tactics Explained: DESTROY Them Using Discovered Attacks!', channel: 'LionChess' },
-  geometry: { id: 'SqJluVo3-Uw', title: 'Geometry of Chess Tactics: Overloading, Deflection, Remove the Defender', channel: 'Engineer’s Gambit' },
-  decoyDeflection: { id: '9cwNsRA3txY', title: 'Decoy vs Deflection | Chess tactics', channel: 'NM Robert Ramirez' },
-  decoy: { id: 'fRKLAJ0YF-s', title: 'Trapping your Opponent with a Decoy', channel: 'Chessfactor' },
-  backRank: { id: 'kT0b-TnyVL4', title: 'Checkmate Pattern #2 — Back Rank Mate', channel: 'Chess Vibes' },
-  backRank2: { id: 'B4jwRq2aCog', title: 'Back Rank Checkmate — Fundamental Mating Patterns', channel: 'ChessGeek' },
-  smothered: { id: 'SDkZiwb07uA', title: 'How To Win With The Smothered Mate', channel: 'Chess Explained' },
-
-  // — Calculation and attack —
-  calculateLikeGM: { id: 'eM4LPqqDgoU', title: 'How to Calculate in Chess Like a Grandmaster', channel: 'Remote Chess Academy' },
-  candidateMoves: { id: 'gz6RwS-HVgA', title: 'Calculation Training: Finding Candidate Moves', channel: 'ChessDojo' },
-  visualization: { id: 'WChrD2tXiWQ', title: 'How to Improve your Chess Visualization?', channel: 'Chessfactor' },
-  visualizationDrills: { id: 'dSXYUFPuPnc', title: 'Chess Visualization Training [Simple Exercises]', channel: 'Remote Chess Academy' },
-  calcVisEval: { id: 'VhhBqgyUIvY', title: 'How to Practice Calculation, Visualisation and Evaluation', channel: 'ChessCoach Andras' },
-  timeTrouble: { id: 'e0uleosgHXA', title: 'How to Fix Your Time Management in Chess (Full Guide)', channel: 'Chess Master School' },
-  attackCastled: { id: 'jZWoaYJP6kk', title: 'Attacking the Castled King: Sacrifice on h6', channel: 'michechess' },
-  oppositeCastling: { id: '5M6dbucLHf8', title: 'Opposite Side Castling and PAWN STORM!', channel: 'Adventures of a Chess Noob' },
-  pawnStorms: { id: 'BSzyCzoWFIQ', title: 'Mastering Pawn Storms: Strategies for Attacking the Enemy King', channel: 'Dr. Can’s Chess Clinic' },
-  greekGift: { id: 'mNp0nNCsXYs', title: 'The Greek Gift: The Sacrifice That Leads Straight To Checkmate', channel: 'Chess Octopus Knight' },
-  sacrifice: { id: '9VWbkNPESKY', title: 'Watch This Before You Sacrifice a Piece for Two Pawns', channel: 'Dr. Can’s Chess Clinic' },
-
-  // — Positional —
-  weakPawns: { id: 'cOtBBLBq_nk', title: 'Chess Strategy: Weak Squares, Weak Pawns & Strong Knights', channel: 'Amit Panchal' },
-  weakSquares: { id: 'jEehFvnO3ZA', title: 'Weak Squares and Outposts | Chess Middlegames', channel: 'Hanging Pawns' },
-  outposts: { id: '_mpljjbIgfs', title: 'ALL You Need to Know About Weak Squares (OUTPOSTS)!', channel: 'LionChess' },
-  goodBadBishop: { id: 'aEFLHE5E-F8', title: 'What are Good and Bad Bishops?', channel: 'ChessNetwork' },
-  bishopVsKnight: { id: 'wgVDmt2F1w0', title: 'Good Knight vs. Bad Bishop', channel: 'Dr. Can’s Chess Clinic' },
-  openFiles: { id: '_dRO07JMHoU', title: 'Use Open Files Like a Pro (Chess Strategy Guide)', channel: 'PavelChess' },
-  seventhRank: { id: '1uLu5QQxQvk', title: 'Rooks on the 7th Rank: Why This Wins Games Instantly', channel: 'Checkmate with Blake' },
-  rookCoordination: { id: 'eN33tStEP-A', title: 'Dominating Open Files with Your Rooks', channel: 'Chess Strategy' },
-  prophylaxis: { id: 'caYjV4vJFhY', title: 'Chess Strategy: Prophylaxis', channel: 'thechesswebsite' },
-
-  // — Openings and structures —
-  centralControl: { id: 'gpsZAim-mYc', title: 'Must-Know Opening Principles — Central Control', channel: 'Chessfactor' },
-  development: { id: '6mDzYUE_zqo', title: 'Must-Know Opening Principles — Piece Development', channel: 'Chessfactor' },
-  kingSafety: { id: 'FyvJMCDeeT4', title: 'King Safety in Chess — No.1 Priority for every Beginner', channel: 'Chessfactor' },
-  openingPrinciples: { id: 'jfcVjIa1EGM', title: 'Every Chess Opening Principle Explained In 18 Minutes', channel: 'Remote Chess Academy' },
-  openingPrinciples9: { id: 'nROIk2oUBX4', title: '9 Most Important Chess Opening Principles', channel: 'Hanging Pawns' },
-  iqpAttack: { id: 'EfQflTtTDmA', title: 'How to Play with the Isolated Queen’s Pawn | GM Yasser Seirawan', channel: 'chessbrah' },
-  iqpBlockade: { id: '2zs6Y8XOiDE', title: 'How to play against the isolated queen pawn', channel: 'ElzChess' },
-  iqpStructures: { id: 'K66S5y9Uxcs', title: 'Understanding Chess Structures: The Isolated Queen Pawn', channel: 'ChessDawg' },
-  carlsbad: { id: 'dMDAmC78sJY', title: 'Carlsbad Pawn Structure And Minority Attack', channel: 'Chess Mode' },
-  minorityAttack: { id: 'IAQife0dSqc', title: 'The Minority Attack | Chess Middlegames', channel: 'Hanging Pawns' },
-
-  // — Endgames —
-  opposition: { id: 'SoZPZdnYYk8', title: 'Opposition | Chess Endgames', channel: 'Hanging Pawns' },
-  opposition2: { id: 'x6LM8QXCLLg', title: 'The Opposition | King & Pawn Endgames', channel: 'Chessfactor' },
-  keySquares: { id: 'fkFXB2V3SY8', title: 'Key Squares in King and Pawn Endgames', channel: 'Chessfactor' },
-  lucena: { id: 'wZODSIpFtJg', title: 'To Win Rook Endgames, You Need To Know The Lucena Position', channel: 'GM Huschenbeth' },
-  philidor: { id: 'gkP44VKT9Rw', title: 'Chess Endgame Fundamentals: Philidor Position', channel: 'John Bartholomew' },
-  rookEndgames: { id: '_lvTNSQ_eL0', title: 'Stop Losing Rook Endgames | Lucena and Philidor Guide', channel: 'Critical Chess' },
-  rookEndgames2: { id: 'jYI27mLIFKM', title: 'Mastering Basic Rook Endgames: Philidor & Lucena', channel: 'ChessDojo' },
-  rookEndgames3: { id: 'rDist9x7szE', title: 'Rook Endgames: The Lucena and Philidor Positions Explained', channel: 'GM Talks' },
-  rookPractical: { id: 'pD-FzMo7hYc', title: 'Chess Endgame: Lucena and Philidor Rook and Pawn Endings', channel: 'NM Dan Heisman' },
-  oppositeBishops: { id: 'raHFFdThosU', title: 'Opposite Colored Bishops Endgames, Part 1', channel: 'Hanging Pawns' },
-  oppositeBishops2: { id: 'YDd3w4Tkkgs', title: 'Opposite Colored Bishops Endgames | Endgame Strategy', channel: 'Chessfactor' },
-  queenEndings: { id: 'E4NhQt5nRpk', title: 'Queen vs Bishop & Queen vs Knight Chess Endgame', channel: 'KeSetoKaiba' },
-  bishopKnightMate: { id: 'dHnz4U7qjfk', title: 'Knight + Bishop Checkmate (THE EASY WAY)', channel: 'Chess Vibes' },
-
-  // — Competitive mastery —
-  analyzeGames: { id: 'cpYxBIWH5S4', title: 'How to analyze your chess games for maximum improvement', channel: 'Sam Asaka' },
-  gameReview: { id: 'f8QrRbmaHxE', title: 'Improve On Your Own: Game Review Explained', channel: 'ChessCoach Andras' },
-  learnFromMistakes: { id: 'Qb_MDIf3lCs', title: 'How to analyze your games and learn from your mistakes', channel: 'Hanging Pawns' },
-  trainingPlan: { id: '7d4y6vxFNMw', title: 'How to Analyze Your Game for Improvement', channel: 'Better Chess Training' },
-  clockManagement: { id: 'd_K8Xe3obMM', title: 'Time Management In Chess', channel: 'GothamChess' },
-  timeTips: { id: 'wdwxErflrY0', title: '7 Tips for Better Time Management in Chess', channel: 'Kamryn' },
-  timeControl: { id: 'FuTBc6TvV24', title: 'The Best Time Control For Chess Improvement', channel: 'GM Noel Studer' },
-} as const satisfies Record<string, CuratedVideo>
-
-type VideoKey = keyof typeof LIBRARY
-
-/** Lesson slug → curated video. Slugs with no entry fall back to a search. */
-const LESSON_VIDEOS: Partial<Record<string, VideoKey>> = {
-  // Fundamentals
-  'fundamentals-board-orientation-light-square': 'rulesKid',
-  'fundamentals-files-ranks-square-names': 'rulesKid',
-  'fundamentals-starting-position': 'rulesKid',
-  'fundamentals-pieces-what-they-worth': 'rules8min',
-  'fundamentals-how-rook-moves-captures': 'rulesAll',
-  'fundamentals-how-bishop-moves-captures': 'rulesAll',
-  'fundamentals-how-queen-moves-captures': 'rulesAll',
-  'fundamentals-how-knight-moves-captures': 'rulesAll',
-  'fundamentals-how-king-moves': 'rulesAll',
-  'fundamentals-attacked-squares': 'rulesAll',
-  'fundamentals-check-three-legal-responses': 'rulesAll',
-  'fundamentals-pawn-movement-two-square': 'rules8min',
-  'fundamentals-pawn-captures': 'rules8min',
-  'fundamentals-en-passant': 'enPassant',
-  'fundamentals-pawn-promotion-underpromotion': 'specialMoves',
-  'fundamentals-castling-kingside-queenside': 'specialMoves8',
-  'fundamentals-when-castling-illegal': 'hiddenRules',
-  'fundamentals-checkmate': 'rulesAll',
-  'fundamentals-stalemate': 'stalemate',
-  'fundamentals-draws-repetition-fifty-move': 'drawStalemate',
-  'fundamentals-resignation-draw-offers': 'hiddenRules',
-  'fundamentals-clocks-time-controls-flagging': 'timeControl',
-
-  // Tactics
-  'tactics-mate-one': 'matePatterns',
-  'tactics-escape-square-counting': 'matePatterns',
-  'tactics-ladder-mate': 'rookMate',
-  'tactics-hanging-pieces': 'tacticsMustKnow',
-  'tactics-checks-captures-threats-scan': 'calculateLikeGM',
-  'tactics-candidate-moves': 'candidateMoves',
-  'tactics-forks': 'forksPinsSkewers',
-  'tactics-knight-forks': 'forksPinsSkewers2',
-  'tactics-double-attacks': 'everyTactic',
-  'tactics-loose-pieces': 'tacticsMustKnow',
-  'tactics-pins-absolute-relative': 'pinsForksSkewers3',
-  'tactics-attacking-pinned-piece': 'tacticsMustKnow',
-  'tactics-skewers': 'forksPinsSkewers',
-  'tactics-x-rays': 'everyTactic',
-  'tactics-alignments': 'everyTactic',
-  'tactics-discovered-attacks': 'discovered',
-  'tactics-discovered-check': 'discovered2',
-  'tactics-double-check': 'discovered3',
-  'tactics-batteries': 'everyTactic',
-  'tactics-removal-defender': 'geometry',
-  'tactics-deflection': 'decoyDeflection',
-  'tactics-attraction': 'decoy',
-  'tactics-overloading': 'geometry',
-  'tactics-zwischenzug': 'everyTactic',
-  'tactics-back-rank-mate': 'backRank',
-  'tactics-smothered-mate': 'smothered',
-  'tactics-corridor-box-mates': 'backRank2',
-  'tactics-battery-mates': 'matePatterns',
-  'tactics-stalemate-as-saving-resource': 'stalemate',
-
-  // Calculation and attack
-  'calculation-building-calculation-tree': 'calculateLikeGM',
-  'calculation-forcing-moves-first': 'calculateLikeGM',
-  'calculation-visualization': 'visualization',
-  'calculation-board-reconstruction': 'visualizationDrills',
-  'calculation-finding-opponents-best-defense': 'calcVisEval',
-  'calculation-refutation-discipline': 'calcVisEval',
-  'calculation-non-forcing-calculation': 'calcVisEval',
-  'calculation-calculation-under-time-pressure': 'timeTrouble',
-  'calculation-preconditions-attack': 'attackCastled',
-  'calculation-opening-lines-against-uncastled': 'attackCastled',
-  'calculation-same-side-castling-attacks': 'attackCastled',
-  'calculation-opposite-side-castling-attacks': 'oppositeCastling',
-  'calculation-pawn-storms': 'pawnStorms',
-  'calculation-greek-gift': 'greekGift',
-  'calculation-sacrifices-attack': 'sacrifice',
-  'calculation-judging-compensation': 'sacrifice',
-
-  // Positional
-  'positional-complete-position-evaluation': 'calcVisEval',
-  'positional-weak-pawns-isolated-doubled': 'weakPawns',
-  'positional-weak-squares-holes': 'weakSquares',
-  'positional-outposts': 'outposts',
-  'positional-good-bishop-bad-bishop': 'goodBadBishop',
-  'positional-bishop-knight': 'bishopVsKnight',
-  'positional-open-files': 'openFiles',
-  'positional-seventh-rank': 'seventhRank',
-  'positional-major-piece-coordination': 'rookCoordination',
-  'positional-prophylaxis': 'prophylaxis',
-  'positional-detecting-opponents-plan': 'prophylaxis',
-
-  // Pawn structures and openings
-  'structures-control-center': 'centralControl',
-  'structures-development': 'development',
-  'structures-king-safety-opening': 'kingSafety',
-  'structures-connecting-rooks': 'openingPrinciples',
-  'structures-choosing-your-first-openings': 'openingPrinciples9',
-  'structures-isolated-queens-pawn-attacking': 'iqpAttack',
-  'structures-isolated-queens-pawn-blockading': 'iqpBlockade',
-  'structures-panov-structures': 'iqpStructures',
-  'structures-carlsbad-structure': 'carlsbad',
-  'structures-minority-attack': 'minorityAttack',
-
-  // Endgames
-  'endgames-king-rook-king': 'rookMate',
-  'endgames-opposition': 'opposition',
-  'endgames-distant-opposition': 'opposition2',
-  'endgames-key-squares': 'keySquares',
-  'endgames-bishop-knight-mate': 'bishopKnightMate',
-  'endgames-lucena-position': 'lucena',
-  'endgames-philidor-position': 'philidor',
-  'endgames-cutting-off-king': 'rookEndgames',
-  'endgames-short-side-defense': 'rookEndgames2',
-  'endgames-frontal-defense-side-checks': 'rookEndgames3',
-  'endgames-practical-multi-pawn-rook': 'rookPractical',
-  'endgames-opposite-colored-bishop-endings': 'oppositeBishops',
-  'endgames-same-colored-bishop-endings': 'oppositeBishops2',
-  'endgames-queen-endings': 'queenEndings',
-
-  // Competitive mastery
-  'mastery-playing-complete-slow-game': 'timeControl',
-  'mastery-independent-game-analysis': 'analyzeGames',
-  'mastery-analyzing-without-engine': 'gameReview',
-  'mastery-error-taxonomy': 'learnFromMistakes',
-  'mastery-designing-training-plan': 'trainingPlan',
-  'mastery-clock-management': 'clockManagement',
-  'mastery-practical-decisions': 'timeTips',
+  /** Uploading channel, when known. */
+  channel?: string
 }
 
 /**
- * The video for a lesson: an explicit `youtubeId` in frontmatter wins, then the
- * curated library. Returns null when neither has one — the caller should offer a
- * search instead of an empty player.
+ * Lesson slug → concept-specific YouTube Short.
+ *
+ * Keep these assignments one-to-one by concept. A broad compilation should
+ * not be reused across several lessons: the clip should demonstrate only the
+ * idea named by the lesson.
+ */
+const LESSON_SHORTS: Partial<Record<string, CuratedVideo>> = {
+  "fundamentals-board-orientation-light-square": { id: "NQwITZ4YGuM", title: "How to setup a Chess Board?" },
+  "fundamentals-files-ranks-square-names": { id: "lDgYeJ2_qdY", title: "CHESS BOARD | FILES | RANKS | PIECES NAMES AND POINTS | #masterofchessbrain | #chess |" },
+  "fundamentals-starting-position": { id: "1mshvpn8NLI", title: "How to Set Up the Board in Chess" },
+  "fundamentals-pieces-what-they-worth": { id: "p3AFtv9eC-o", title: "how much are chess pieces worth? #chess" },
+  "fundamentals-how-rook-moves-captures": { id: "nwdXjEwVH1w", title: "Why the Rook Moves in Straight Lines #chess #shorts #facts" },
+  "fundamentals-how-bishop-moves-captures": { id: "bjbQWbsWjYI", title: "How the BISHOP Moves in Chess" },
+  "fundamentals-how-queen-moves-captures": { id: "dZTXFsocGEg", title: "How The Queen Moves In Chess" },
+  "fundamentals-how-knight-moves-captures": { id: "gbKjLoHg1yg", title: "Magnus Carlsen Explains How the Knight Moves" },
+  "fundamentals-how-king-moves": { id: "K-Fz9KnZ2WM", title: "How the KING Moves in Chess ♔ | Chess Basics Explained* #chess #chesstactics #shorts #chessshorts" },
+  "fundamentals-attacked-squares": { id: "zjU8jozyW2E", title: "Attack the vulnerable squares in chess.#chess #shorts" },
+  "fundamentals-check-three-legal-responses": { id: "1xz3588Qumo", title: "How to Use the King" },
+  "fundamentals-pawn-movement-two-square": { id: "YUQVDf1tmFc", title: "Why Can Pawns Move 2 Squares First? 😳♟️🤯" },
+  "fundamentals-pawn-captures": { id: "A4DtMPBegSA", title: "Mastering Chess: Understanding Pawn Movement and Capturing" },
+  "fundamentals-en-passant": { id: "M-f95OHjkLA", title: "En Passant Explained" },
+  "fundamentals-pawn-promotion-underpromotion": { id: "V09wOvcJJbM", title: "What Pawn Promotion Actually Looks Like ♟️🔥 | White Endgame" },
+  "fundamentals-castling-kingside-queenside": { id: "EZLDDwuJ0yE", title: "What is the Difference Between Queenside and Kingside Castling?" },
+  "fundamentals-when-castling-illegal": { id: "4Gt9pQ-ZSWo", title: "Legal or Illegal Castling? #chess #shorts" },
+  "fundamentals-checkmate": { id: "b5Drs_7uo1g", title: "Is This Checkmate? #shorts #chess #memes" },
+  "fundamentals-stalemate": { id: "qq5Hwguev_k", title: "What Is Stalemate In Chess?" },
+  "fundamentals-draws-repetition-fifty-move": { id: "dpd0rhi1_JM", title: "Chess: How to Get a Draw" },
+  "fundamentals-resignation-draw-offers": { id: "xyuJ1xnu6SM", title: "Opponent Declined a Draw Offer and Eventually Resigned" },
+  "fundamentals-clocks-time-controls-flagging": { id: "MGY08JdlzA4", title: "Chess Clock Ticking: Can I Flag My Opponent in Time?! #chess #puzzle #chessmaster" },
+  "tactics-mate-one": { id: "oSvOUXIwbxE", title: "Mate in 1." },
+  "tactics-escape-square-counting": { id: "wb5SOdHaBwk", title: "Escape Square" },
+  "tactics-ladder-mate": { id: "hWAI7TK8Pkw", title: "What is the Ladder Mate in Chess?" },
+  "tactics-hanging-pieces": { id: "8sIttks8Qdo", title: "Hanging Pieces | Chess Tactics Series #chess" },
+  "tactics-checks-captures-threats-scan": { id: "xV49NG0vmjg", title: "Checks, Captures, & Threats #chess" },
+  "tactics-candidate-moves": { id: "hA38MWhmVaI", title: "Use Candidate Moves to Win Games!" },
+  "tactics-forks": { id: "CO0NrCI-DoU", title: "Forks! 🍴🍴 Beginner chess tactic explained!" },
+  "tactics-knight-forks": { id: "STuEMfX7wyw", title: "Instantly See Knight Forks #shorts" },
+  "tactics-double-attacks": { id: "6REmOlwvIDk", title: "Why Double Attacks Win Games | Chess Tactics Explained#shorts" },
+  "tactics-loose-pieces": { id: "ODWkot5PRjE", title: "Loose Piece Tactic" },
+  "tactics-pins-absolute-relative": { id: "9VW-prKt35U", title: "You have to know this (Absolute and Relative Pins) !! #chess #shorts" },
+  "tactics-attacking-pinned-piece": { id: "lS1LWJgvtFM", title: "Attack the Pinned Piece in Chess!" },
+  "tactics-skewers": { id: "qrzKcB-UEfg", title: "Everything You MUST KNOW About Skewers in Chess!" },
+  "tactics-x-rays": { id: "UdIHIvv7KkI", title: "X - Ray Tactics  #chess #chessgame #checkmate #chesstactics" },
+  "tactics-alignments": { id: "UdIHIvv7KkI", title: "X-Ray Tactics" },
+  "tactics-discovered-attacks": { id: "L2wxgxpKs6U", title: "Discovered attacks explained. chess for beginners  #shorts #chessdawgs #chess" },
+  "tactics-discovered-check": { id: "JyL3ol4NuJA", title: "What is a Discovered Check in Chess?" },
+  "tactics-double-check": { id: "NyvLQ6RsM94", title: "Double Check | Chess Tactics Series #chess" },
+  "tactics-batteries": { id: "ehywYybGggw", title: "Batteries | Chess Tactics Series #chess" },
+  "tactics-removal-defender": { id: "qH_RX9334CQ", title: "Understanding the Removal of the Defender." },
+  "tactics-deflection": { id: "nZponwYci1E", title: "Deflection | Chess Tactics Series #chess" },
+  "tactics-attraction": { id: "MEpu-Fx2-g8", title: "Attraction | Chess Tactics" },
+  "tactics-overloading": { id: "JCGPL1FF1s8", title: "Overloading Tactics Explained" },
+  "tactics-zwischenzug": { id: "VNZCMfTwPbs", title: "Zwischenzug | Chess Tactics Series #chess" },
+  "tactics-back-rank-mate": { id: "cdlfnjdjZE8", title: "Back-Rank Mate #chess #chesstipsandtricks #chessendgame #shortsfeed #shorts #sports #gaming" },
+  "tactics-smothered-mate": { id: "OCAwLnjoeeU", title: "How the Smothered mate works!" },
+  "tactics-corridor-box-mates": { id: "SHpwm_95Fis", title: "What is the Corridor Checkmate in Chess?" },
+  "tactics-battery-mates": { id: "DXw_cDa2eC4", title: "Mating Motifs: The Battery 🔋" },
+  "tactics-stalemate-as-saving-resource": { id: "qq5Hwguev_k", title: "What Is Stalemate In Chess?" },
+  "calculation-building-calculation-tree": { id: "EgUfY0x5dN4", title: "A Simple Trick to Calculate Deeper in Chess" },
+  "calculation-forcing-moves-first": { id: "GyWHD_vloR8", title: "Forcing Moves WINS in Chess (PROOF)" },
+  "calculation-visualization": { id: "GwjMMlx03z8", title: "Secret Hack To Chess Visualization" },
+  "calculation-board-reconstruction": { id: "ttVNVNRTljc", title: "How to Visualize the Chess Board in under 1 Minute" },
+  "calculation-finding-opponents-best-defense": { id: "XpXuoHoKBAI", title: "How Far Can a Chess Grandmaster Calculate?" },
+  "calculation-refutation-discipline": { id: "PHQ28BlvFeA", title: "Crush the Stafford Gambit: Refutation Guide" },
+  "calculation-non-forcing-calculation": { id: "X46dM3bXng8", title: "How to Calculate in Chess" },
+  "calculation-calculation-under-time-pressure": { id: "wZFhRExVCf0", title: "Nice Calculation under Pressure" },
+  "calculation-preconditions-attack": { id: "GnHp4OgFnCs", title: "To the attack! 💨 #chess" },
+  "calculation-opening-lines-against-uncastled": { id: "MPhfgBJxhg4", title: "Learn The Castling Trap (Opening Trap Series)" },
+  "calculation-same-side-castling-attacks": { id: "Gat32ZVHb4U", title: "How To Attack The Castled King" },
+  "calculation-opposite-side-castling-attacks": { id: "7wetopPp5Vo", title: "Attacking Opposite Side Castling" },
+  "calculation-pawn-storms": { id: "vC9m5s-1oMI", title: "How Pawn Storms Work #chess #attack #middlegame #checkmate #chesscom #pawnstorm #strategy #tactics" },
+  "calculation-greek-gift": { id: "muPh6O8jnQE", title: "The Greek Gift!" },
+  "calculation-sacrifices-attack": { id: "bZduvmOBYe8", title: "Mikhail Tal - The GOD Of Sacrifices In Chess" },
+  "calculation-judging-compensation": { id: "9jgsPIfqNDo", title: "Compensation in Chess ♟" },
+  "positional-complete-position-evaluation": { id: "gRWgrhtoakQ", title: "How to evaluate a chess position?! 🤔♟️" },
+  "positional-weak-pawns-isolated-doubled": { id: "ESuhEueJQrI", title: "Doubled Isolated Pawn ? | How To Play Against Doubled Isolated Pawns !? | #shorts #chessshorts" },
+  "positional-weak-squares-holes": { id: "uP0OjJ-0ikw", title: "Weak squares for dummies ! #chess #pawnbreak.com" },
+  "positional-outposts": { id: "TmyJN2MtR0o", title: "Chess For Beginners: Chess Weaknesses and Outposts | #chess #chessforbeginners #education" },
+  "positional-good-bishop-bad-bishop": { id: "2DU_N2PkEjY", title: "Bad Bishop vs Good Bishop" },
+  "positional-bishop-knight": { id: "5a_IJFYK3CA", title: "Bishop vs Knight | Which is the better chess piece? #chess #chesscom #shorts" },
+  "positional-open-files": { id: "cKs0m3Kj_Jc", title: "Why Rooks ❤️ Open Files & 7th Rank" },
+  "positional-seventh-rank": { id: "pQYOIQGToqQ", title: "The seventh rule in chess: Rooks on the seventh rank #chess" },
+  "positional-major-piece-coordination": { id: "O017LYBPNNY", title: "Piece Coordination & Tactical Combination" },
+  "positional-prophylaxis": { id: "N6WmHGKLaa8", title: "PROPHYLAXIS in Chess. GM Johan Hellsten explains." },
+  "positional-detecting-opponents-plan": { id: "rwLttI0TypA", title: "Figure out your opponent’s plan! ♟️#chessmaster #grandmaster #russianschoolofchess" },
+  "structures-control-center": { id: "9WXgdSjnMM0", title: "control of the center #chess #kasparov" },
+  "structures-development": { id: "19I2qqCH1MA", title: "Development Chess Game #chess #shorts" },
+  "structures-king-safety-opening": { id: "DZHjxQpGi1w", title: "King Safety In Chess" },
+  "structures-connecting-rooks": { id: "2iFRrwohzbk", title: "Principles Expanded 5 | Connecting The Rooks" },
+  "structures-choosing-your-first-openings": { id: "fpSdJEoE6kg", title: "Top 5 Most Popular Chess Openings" },
+  "structures-isolated-queens-pawn-attacking": { id: "vxDSXwYl-Ns", title: "Pegasus Chess Strategy: Isolated Queen's Pawn and Passed Pawn for Attack" },
+  "structures-isolated-queens-pawn-blockading": { id: "Ws0rEqkmYPM", title: "An Isolated Queen's Pawn | Karpov vs Spassky #chess #shorts #king" },
+  "structures-panov-structures": { id: "k0y0bB92tPM", title: "Caro-Kann: Accelerated Panov Attack" },
+  "structures-carlsbad-structure": { id: "wqplsMYrO-U", title: "What Is The CARLSBAD STRUCTURE??? #chess #catan #chessgame #chesscom #chesstactics #checkmate" },
+  "structures-minority-attack": { id: "5O0pED_mzCo", title: "The Minority Attack in Action #shorts" },
+  "endgames-king-rook-king": { id: "3yf7vPz1px4", title: "How To Checkmate With a Rook and King" },
+  "endgames-opposition": { id: "8KzGER982O8", title: "Opposition and Outflanking" },
+  "endgames-distant-opposition": { id: "oSYOFZ8yXjY", title: "Distant Opposition | Chess Tactics Series #chess" },
+  "endgames-key-squares": { id: "56s3vdC0eLs", title: "Win with Key Squares 🔑" },
+  "endgames-bishop-knight-mate": { id: "2jfFsz_cJjE", title: "LEARN BISHOP & KNIGHT MATE WITH HIKARU!!" },
+  "endgames-lucena-position": { id: "PfUvc1Q972s", title: "The Lucena Position Explained #chesslesson #learnchess #chess #chessnest" },
+  "endgames-philidor-position": { id: "njMAZ2K0nyM", title: "Mastering the Philidor Position | Essential Endgame Technique in Chess" },
+  "endgames-cutting-off-king": { id: "A61XYKjVZqU", title: "5 Rook Endgame Ideas You Must Know" },
+  "endgames-short-side-defense": { id: "A61XYKjVZqU", title: "5 Rook Endgame Ideas You Must Know" },
+  "endgames-frontal-defense-side-checks": { id: "A61XYKjVZqU", title: "5 Rook Endgame Ideas You Must Know" },
+  "endgames-practical-multi-pawn-rook": { id: "GMExfFl1n4A", title: "IMPORTANT ROOK VS PASSED PAWNS ENDGAME TIP!!" },
+  "endgames-opposite-colored-bishop-endings": { id: "m_6RJn126b8", title: "Pov: you're an opposite-colored bishop trying to win an endgame #chess #shorts" },
+  "endgames-same-colored-bishop-endings": { id: "Wg0xOOjWDlk", title: "Same color bishops endgame | win or draw" },
+  "endgames-queen-endings": { id: "VFArEWXCU8g", title: "Queen Endgame Tricks You Must Know" },
+  "mastery-playing-complete-slow-game": { id: "g5Hm0lH7UNw", title: "Too Fast and Too Slow" },
+  "mastery-independent-game-analysis": { id: "yyNOqZmXD1s", title: "How to Analyze Your Chess Game" },
+  "mastery-analyzing-without-engine": { id: "SRl8NZ5ObKM", title: "Why analyze without the Chess engine first | Schemas and learning objectives" },
+  "mastery-error-taxonomy": { id: "UWQ8LbVqo44", title: "Rookie Error #beginnerchess #learnchess #checkmate #chessfun #chesscom" },
+  "mastery-designing-training-plan": { id: "fG5ZIQUwnI4", title: "Design Your Path to Chess Mastery: Training Plan!" },
+  "mastery-clock-management": { id: "qWxcsZeMfqE", title: "How to Get Better at Chess: Time Management" },
+  "mastery-practical-decisions": { id: "hA38MWhmVaI", title: "Use Candidate Moves to Win Games" },
+}
+
+/**
+ * The Short for a lesson: an explicit `youtubeId` in frontmatter wins, then
+ * the curated per-lesson library. Returns null when neither has one.
  */
 export function getLessonVideo(lesson: Lesson): CuratedVideo | null {
   if (lesson.youtubeId) {
-    return { id: lesson.youtubeId, title: lesson.title, channel: '' }
+    return { id: lesson.youtubeId, title: lesson.title }
   }
-  const key = LESSON_VIDEOS[lesson.slug]
-  return key ? LIBRARY[key] : null
+  return LESSON_SHORTS[lesson.slug] ?? null
 }
 
-/** A prepared YouTube search for lessons with no curated video yet. */
+/** A prepared YouTube Shorts search for lessons with no curated clip yet. */
 export function videoSearchUrl(lesson: Lesson): string {
-  const query = `chess ${lesson.title}`
+  const query = `chess ${lesson.title} shorts`
   return `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`
 }

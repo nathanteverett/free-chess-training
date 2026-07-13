@@ -2,7 +2,9 @@ import type { EngineEval } from '../types'
 
 // Path to the single-threaded Stockfish worker script served from /public.
 // The single build needs no COOP/COEP headers (see scripts/copy-engine.mjs).
-const ENGINE_URL = '/stockfish/stockfish-nnue-16-single.js'
+// BASE_URL (always trailing-slashed) keeps this correct when the site is served
+// from a subpath, as it is on GitHub project pages.
+const ENGINE_URL = `${import.meta.env.BASE_URL}stockfish/stockfish-nnue-16-single.js`
 
 export interface AnalyzeOptions {
   /** Search depth. Higher is stronger but slower. */

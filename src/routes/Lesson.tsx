@@ -50,9 +50,9 @@ export function Lesson() {
         </p>
       </header>
 
-      {/* Video */}
+      {/* Concept-specific YouTube Short */}
       <section>
-        <h2 className="mb-3 text-lg font-semibold">Video</h2>
+        <h2 className="mb-3 text-lg font-semibold">YouTube Short</h2>
         <YouTubeEmbed
           videoId={video?.id}
           title={video?.title ?? lesson.title}

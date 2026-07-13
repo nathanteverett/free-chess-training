@@ -1,0 +1,42 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "free-chess-training-live",
+  "main": "./worker/index.ts",
+  "compatibility_date": "2026-07-01",
+
+  // API only. The site itself is static and deploys elsewhere — it ships a
+  // 38 MB Stockfish network, which is over Cloudflare's 25 MiB asset limit.
+  "durable_objects": {
+    "bindings": [{ "name": "GAME_ROOM", "class_name": "GameRoom" }]
+  },
+
+  // One Durable Object per game, keyed by access code.
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["GameRoom"] }],
+
+  // Creating a game costs a Durable Object, so it is the expensive verb and the
+  // one worth limiting hardest. Joining is cheap but is also how you would
+  // brute-force codes, so it gets a looser cap of its own.
+  // Note: rate limits are enforced on Cloudflare's network, not in `wrangler dev`.
+  "ratelimits": [
+    {
+      "name": "CREATE_LIMIT",
+      "namespace_id": "1001",
+      "simple": { "limit": 10, "period": 60 }
+    },
+    {
+      "name": "JOIN_LIMIT",
+      "namespace_id": "1002",
+      "simple": { "limit": 60, "period": 60 }
+    }
+  ],
+
+  // The origin(s) allowed to call this API, comma-separated. Only the origin
+  // matters, never the path: GitHub project pages live under
+  // /free-chess-training/, but a browser sends the bare origin.
+  // `npm run dev:worker` overrides this with localhost — see package.json.
+  "vars": {
+    "ALLOWED_ORIGINS": "https://nathanteverett.github.io"
+  },
+
+  "observability": { "enabled": true }
+}

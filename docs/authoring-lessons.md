@@ -40,7 +40,7 @@ Write the lesson article here in Markdown. You can use headings, lists,
 | `category`  | yes      | Must exactly match an `id` in `src/content/curriculum.ts`, e.g. `tactics`. |
 | `order`     | yes      | Integer; lessons are sorted globally by this.                |
 | `summary`   | yes      | One sentence; shown in the category list and at the top of the lesson. |
-| `youtubeId` | no       | Overrides the curated video. Normally left empty — see below. |
+| `youtubeId` | no       | Overrides the curated Short. Normally left empty — see below. |
 | `puzzleIds` | no       | Array of puzzle ids (see below). Empty shows a note.         |
 | `games`     | no       | List of `{ label, url, note? }`. Empty shows a note.         |
 
@@ -50,9 +50,9 @@ goes under `endgames` even if a beginner meets it first.
 
 ## 2. Adding the video
 
-Lesson videos come from the curated library in `src/content/videos.ts`, not from
-frontmatter. Add the video to `LIBRARY`, then map the lesson slug to it in
-`LESSON_VIDEOS`. A lesson with no mapping shows a "Search YouTube" card rather
+Lesson videos are focused YouTube Shorts from the curated map in
+`src/content/videos.ts`, not from frontmatter. Add one entry to `LESSON_SHORTS`
+for the lesson slug. A lesson with no mapping shows a "Search YouTube" card rather
 than an empty player, so it is always safe to leave one unmapped.
 
 **Verify every id before you commit it.** A wrong id renders a dead player:
@@ -63,7 +63,7 @@ curl -s -o /dev/null -w "%{http_code}\n" \
 # 200 = live, 404 = dead/private — do not ship a 404
 ```
 
-To pin a specific video to one lesson without touching the library, set
+To pin a specific Short to one lesson without touching the library, set
 `youtubeId: "ABC123"` in its frontmatter; that always wins. The embed is lazy (it
 loads only when the user clicks play) and uses the privacy-enhanced
 `youtube-nocookie` domain.
@@ -121,13 +121,56 @@ for `backRank` puzzles). Run it after adding puzzles:
 npm test
 ```
 
-### Importing many puzzles (Lichess database)
+### Where the bulk of the puzzles come from (Lichess database)
 
-For volume, seed from the **Lichess open puzzle database** (CC0, ~4M puzzles
-tagged by theme such as `fork`, `pin`, `backRank`, `mateIn2`):
-<https://database.lichess.org/#puzzles>. Filter the CSV by the `Themes` column
-to match a lesson, then map each row to the `Puzzle` shape above (the CSV gives
-FEN and the solution moves in UCI). Keep the CC0 attribution in `source`.
+You rarely need to hand-write a puzzle. Every lesson already gets ~6 puzzles
+imported from the **Lichess open puzzle database** (CC0, 6M puzzles tagged by
+theme), written to `src/content/puzzles/generated.ts`. A lesson shows its
+hand-picked `puzzleIds` first, then its imported ones.
+
+`generated.ts` is committed, so a normal clone, build and deploy never touch the
+network. You only re-run the import to change what a lesson gets:
+
+1. **Edit the lesson's query** in `scripts/puzzle-queries.mjs`:
+
+   ```js
+   'tactics-knight-forks': { any: ['fork', 'smotheredMate'], rating: [800, 1800] },
+   ```
+
+   `any` = the puzzle must carry at least one of these themes; `all` = it must
+   carry every one (usually a phase tag like `opening`); `rating` = the Glicko
+   band, defaulting to the lesson's category. Theme names must be the exact
+   Lichess ones — a typo silently matches nothing. The canonical list is at
+   [puzzleTheme.xml](https://github.com/lichess-org/lila/blob/master/translation/source/puzzleTheme.xml).
+
+2. **Run the import.** It downloads the database to `.cache/` (gitignored,
+   ~300 MB) the first time, then streams it — nothing but the per-lesson pools
+   is held in memory:
+
+   ```bash
+   npm run import-puzzles     # add --download to force-refresh the database
+   ```
+
+   It fails loudly if any lesson matched no puzzles, and warns about lessons
+   that came up short — both mean the query is too narrow.
+
+3. **Run the tests.** `npm test` replays every imported line for legality.
+
+The importer writes the `idea` and the three `hints` itself, from the puzzle's
+theme tags plus the piece that makes the first move ("The key move is a knight
+move. It is a check."). The database has no prose of its own.
+
+Two details worth knowing if you touch `scripts/import-puzzles.mjs`:
+
+- A database row's FEN is the position **before** the opponent's blunder, and
+  the first listed move **is** that blunder. Our `solution` starts with the
+  solver, so the importer plays that move onto the FEN and stores the result.
+  Get this wrong and every puzzle is off by one ply — still legal, still
+  plausible, and completely wrong.
+- Each puzzle is assigned to exactly **one** lesson, because progress is keyed
+  on puzzle id. Lessons that want the same motif therefore compete, and the
+  importer keeps a deep candidate pool per lesson so the last one resolved does
+  not starve.
 
 ## 5. Narration (text-to-speech)
 

@@ -107,6 +107,8 @@ export interface Puzzle {
   hints: string[]
   /** Optional attribution, e.g. "Lichess puzzle 00sHx (CC0)". */
   source?: string
+  /** Lichess Glicko rating, on imported puzzles. Absent on curated ones. */
+  rating?: number
 }
 
 /** Engine evaluation of a position, as parsed from Stockfish UCI output. */

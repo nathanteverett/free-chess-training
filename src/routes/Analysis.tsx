@@ -112,7 +112,7 @@ export function Analysis() {
         <p className="text-sm text-neutral-500">
           {annotatedGame
             ? `${annotatedGame.white} vs ${annotatedGame.black} · ${annotatedGame.event}`
-            : 'Play moves for both sides. Stockfish evaluates the position live — no account or server required.'}
+            : 'Play moves for both sides. Stockfish evaluates the position live — no account required.'}
         </p>
       </div>
 

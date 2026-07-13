@@ -9,11 +9,15 @@
     "copy-engine": "node scripts/copy-engine.mjs",
     "generate-lessons": "node scripts/generate-lessons.mjs",
     "check-lessons": "node scripts/check-lessons.mjs",
+    "import-puzzles": "node scripts/import-puzzles.mjs",
     "postinstall": "node scripts/copy-engine.mjs",
     "predev": "node scripts/copy-engine.mjs",
     "dev": "vite",
+    "dev:worker": "wrangler dev --port 8787 --var ALLOWED_ORIGINS:http://localhost:5173",
+    "deploy:worker": "wrangler deploy",
     "prebuild": "node scripts/copy-engine.mjs",
     "build": "tsc -b && vite build",
+    "postbuild": "node scripts/pages-fallback.mjs",
     "preview": "vite preview",
     "typecheck": "tsc -b --noEmit",
     "test": "vitest run",
@@ -29,6 +33,7 @@
     "stockfish": "^16.0.0"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260713.1",
     "@mdx-js/rollup": "^3.1.0",
     "@playwright/test": "^1.61.1",
     "@tailwindcss/vite": "^4.1.11",
@@ -43,6 +48,7 @@
     "tailwindcss": "^4.1.11",
     "typescript": "^5.8.3",
     "vite": "^6.3.5",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "wrangler": "^4.110.0"
   }
 }

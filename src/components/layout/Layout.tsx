@@ -19,7 +19,7 @@ export function Layout() {
         <div className="mx-auto flex max-w-5xl items-center gap-4 px-4 py-3">
           <Link to="/" className="flex items-center gap-2 font-bold">
             <img
-              src="/pieces/white-knight.png"
+              src={`${import.meta.env.BASE_URL}pieces/white-knight.png`}
               alt=""
               className="h-7 w-7 rounded bg-brand-dark p-0.5 [image-rendering:pixelated]"
             />
@@ -42,6 +42,14 @@ export function Layout() {
               }
             >
               Analysis board
+            </NavLink>
+            <NavLink
+              to="/play"
+              className={({ isActive }) =>
+                `${navItem} ${isActive ? navActive : navIdle}`
+              }
+            >
+              Play live
             </NavLink>
           </nav>
         </div>

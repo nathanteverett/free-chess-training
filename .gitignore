@@ -21,7 +21,13 @@ public/stockfish/
 .vscode/*
 !.vscode/extensions.json
 
+# Wrangler local state (local Durable Object storage, dev cache)
+.wrangler/
+
 # Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Lichess puzzle database (300MB; fetched on demand by scripts/import-puzzles.mjs)
+.cache/

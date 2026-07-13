@@ -7,6 +7,13 @@ import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
 
 // https://vite.dev/config/
 export default defineConfig({
+  // GitHub project pages serve the site from /<repo>/, not the domain root, so
+  // every asset URL needs that prefix. The deploy workflow sets BASE_PATH; a
+  // custom domain (or `vite dev`) wants the default "/". Anything reading an
+  // asset by absolute path must go through `import.meta.env.BASE_URL`, which
+  // Vite fills in from this — see EngineService and Layout.
+  base: process.env.BASE_PATH ?? '/',
+
   plugins: [
     // MDX must run before the React plugin so that .mdx compiles to JSX first.
     {
@@ -25,5 +32,16 @@ export default defineConfig({
   ],
   worker: {
     format: 'es',
+  },
+  server: {
+    // Live play needs the game server. `npm run dev:worker` runs it on 8787;
+    // everything else in the app still works with the Worker stopped.
+    proxy: {
+      '/api': {
+        target: 'http://127.0.0.1:8787',
+        changeOrigin: true,
+        ws: true,
+      },
+    },
   },
 })

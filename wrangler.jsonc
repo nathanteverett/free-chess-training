@@ -4,6 +4,12 @@
   "main": "./worker/index.ts",
   "compatibility_date": "2026-07-01",
 
+  // Pin the account this Worker belongs to. Without it, wrangler falls back to
+  // whichever account it last cached, which is not necessarily the one the
+  // current credentials are for. An account ID is an identifier, not a
+  // credential — it grants nothing on its own.
+  "account_id": "a589bfb30bb88243d0680ed68a00eff3",
+
   // API only. The site itself is static and deploys elsewhere — it ships a
   // 38 MB Stockfish network, which is over Cloudflare's 25 MiB asset limit.
   "durable_objects": {
@@ -34,9 +40,10 @@
   // matters, never the path: GitHub project pages live under
   // /free-chess-training/, but a browser sends the bare origin.
   // `npm run dev:worker` overrides this with localhost — see package.json.
-  "vars": {
-    "ALLOWED_ORIGINS": "https://nathanteverett.github.io"
-  },
+"vars": {
+  "ALLOWED_ORIGINS": "https://nathanteverett.github.io,http://localhost:5173"
+}
+,
 
   "observability": { "enabled": true }
 }

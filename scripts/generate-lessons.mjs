@@ -3,7 +3,7 @@
 //
 // One lesson = one topic. Titles that used to bundle several ideas ("Forks,
 // pins, skewers, and double attacks") are split so each idea gets its own
-// lesson, video, and puzzle set.
+// lesson and puzzle set.
 //
 // Lessons are filed under a SKILL CATEGORY (see src/content/curriculum.ts) —
 // the skill the topic builds, not the rating band it was introduced at. So the
@@ -364,13 +364,11 @@ for (const group of CATEGORIES) {
       `\n## Overview\n\n` +
       `${summary}\n\n` +
       `## Article\n\n` +
-      `> Starter outline — replace this with your full written lesson. The ` +
-      `lesson video is resolved automatically from the curated library in ` +
-      `\`src/content/videos.ts\`; set \`youtubeId\` above to override it. Attach ` +
+      `> Starter outline — replace this with your full written lesson. Attach ` +
       `practice puzzles via \`puzzleIds\` and link master games via \`games\`.\n\n` +
       `## Practice\n\n` +
-      `Work through the puzzles below to drill this idea, watch the lesson ` +
-      `video, then study the linked master games to see the concept in real ` +
+      `Work through the puzzles below to drill this idea, then study the linked ` +
+      `master games to see the concept in real ` +
       `play. Use the engine to check your own analysis.\n`
 
     writeFileSync(file, frontmatter + body, 'utf8')

@@ -5,7 +5,7 @@ import { ArticleAudio } from '../components/media/ArticleAudio'
 import { mdxComponents } from '../components/mdx/audio'
 import { getAdjacentLessons, getLesson } from '../content/lessons'
 import { getCategory } from '../content/curriculum'
-import { getLessonVideo, videoSearchUrl } from '../content/videos'
+import { getLessonVideo } from '../content/videos'
 import { getLessonPuzzles } from '../content/puzzles'
 import { useProgress } from '../progress/ProgressContext'
 import { YouTubeEmbed } from '../components/media/YouTubeEmbed'
@@ -50,14 +50,13 @@ export function Lesson() {
         </p>
       </header>
 
-      {/* Concept-specific YouTube Short */}
+      {/* Reserved for lesson videos; the current catalog is intentionally blank. */}
       <section>
-        <h2 className="mb-3 text-lg font-semibold">YouTube Short</h2>
+        <h2 className="mb-3 text-lg font-semibold">Video</h2>
         <YouTubeEmbed
           videoId={video?.id}
           title={video?.title ?? lesson.title}
           channel={video?.channel}
-          searchUrl={videoSearchUrl(lesson)}
         />
       </section>
 

@@ -1,44 +1,26 @@
 import { useState } from 'react'
 
 /**
- * Lazy YouTube Shorts embed. Shows a lightweight thumbnail-style placeholder
- * until clicked, then loads the privacy-enhanced (youtube-nocookie) iframe. This
- * avoids loading YouTube's player (and cookies) for lessons the user never
- * plays, and keeps the page fast.
- *
- * When a lesson has no curated video, pass `searchUrl` instead of `videoId`:
- * the component renders a search card rather than an empty player.
+ * Lazy YouTube embed. Without a video id, it preserves the lesson's video
+ * space as an intentionally blank placeholder.
  */
 export function YouTubeEmbed({
   videoId,
   title = 'Lesson video',
   channel,
-  searchUrl,
 }: {
   videoId?: string
   title?: string
   channel?: string
-  searchUrl?: string
 }) {
   const [active, setActive] = useState(false)
 
   if (!videoId) {
     return (
-      <div className="flex aspect-video w-full flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-neutral-400 bg-neutral-100 p-6 text-center dark:border-neutral-600 dark:bg-neutral-900">
-        <p className="text-sm text-neutral-500">
-          No curated Short for this topic yet.
-        </p>
-        {searchUrl && (
-          <a
-            href={searchUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-md bg-brand px-4 py-2 text-sm font-medium text-white transition hover:bg-brand-dark"
-          >
-            Search YouTube Shorts for “{title}” ↗
-          </a>
-        )}
-      </div>
+      <div
+        className="aspect-video w-full rounded-lg border border-dashed border-neutral-300 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900"
+        aria-hidden="true"
+      />
     )
   }
 

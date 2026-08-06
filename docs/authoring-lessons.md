@@ -2,7 +2,7 @@
 
 A lesson is a single MDX file in `src/content/lessons/`. It has **frontmatter**
 (structured fields at the top) and an **article body** (Markdown/MDX below the
-frontmatter). This guide covers how to write one, attach media and puzzles, and
+frontmatter). This guide covers how to write one, attach games and puzzles, and
 add more puzzles.
 
 ## 1. Anatomy of a lesson file
@@ -17,7 +17,7 @@ title: "Knight forks"                     # a single topic
 category: "tactics"                       # must match an id in curriculum.ts
 order: 37                                 # global ordering across all lessons
 summary: "The hardest fork to see coming, and the reason the knight punches above its weight."
-youtubeId: ""                            # optional override; see §2
+youtubeId: ""                            # reserved; leave empty for now
 puzzleIds: ["knight-fork-queen"]         # ids from src/content/puzzles
 games:
   - label: "Morphy's Opera Game (Paris, 1858)"
@@ -40,7 +40,7 @@ Write the lesson article here in Markdown. You can use headings, lists,
 | `category`  | yes      | Must exactly match an `id` in `src/content/curriculum.ts`, e.g. `tactics`. |
 | `order`     | yes      | Integer; lessons are sorted globally by this.                |
 | `summary`   | yes      | One sentence; shown in the category list and at the top of the lesson. |
-| `youtubeId` | no       | Overrides the curated Short. Normally left empty — see below. |
+| `youtubeId` | no       | Reserved for an approved replacement video. Leave empty for now. |
 | `puzzleIds` | no       | Array of puzzle ids (see below). Empty shows a note.         |
 | `games`     | no       | List of `{ label, url, note? }`. Empty shows a note.         |
 
@@ -48,30 +48,17 @@ Categories are a **skill grouping, not a rating ladder** — they carry no stage
 rating band. File a lesson by the skill it builds, so a mating-technique topic
 goes under `endgames` even if a beginner meets it first.
 
-## 2. Adding the video
+## 2. Reserved video section
 
-Lesson videos are focused YouTube Shorts from the curated map in
-`src/content/videos.ts`, not from frontmatter. Add one entry to `LESSON_SHORTS`
-for the lesson slug. A lesson with no mapping shows a "Search YouTube" card rather
-than an empty player, so it is always safe to leave one unmapped.
-
-**Verify every id before you commit it.** A wrong id renders a dead player:
-
-```bash
-curl -s -o /dev/null -w "%{http_code}\n" \
-  "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=ABC123&format=json"
-# 200 = live, 404 = dead/private — do not ship a 404
-```
-
-To pin a specific Short to one lesson without touching the library, set
-`youtubeId: "ABC123"` in its frontmatter; that always wins. The embed is lazy (it
-loads only when the user clicks play) and uses the privacy-enhanced
-`youtube-nocookie` domain.
+Every lesson keeps a blank video section in the layout. The shared video map is
+intentionally empty, and lesson `youtubeId` fields should remain empty until a
+replacement video has been curated and approved. Blank sections contain no
+player, thumbnail, search link, or external request.
 
 ## 3. Adding grandmaster games
 
 Add entries under `games`. Any URL works (Lichess study, chessgames.com,
-Wikipedia, a YouTube analysis, etc.):
+Wikipedia, etc.):
 
 ```yaml
 games:

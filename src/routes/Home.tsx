@@ -33,10 +33,9 @@ export function Home() {
           Learn chess from beginner to master
         </h1>
         <p className="mt-2 max-w-2xl text-white/90">
-          A free, open-source curriculum. Every lesson covers one topic and pairs
-          an article and a video with puzzles that drill the idea, grandmaster
-          games that show it in action, and a built-in engine for checking your
-          analysis.
+          A free, open-source curriculum. Every lesson covers one topic with an
+          article, puzzles that drill the idea, grandmaster games that show it in
+          action, and a built-in engine for checking your analysis.
         </p>
         <p className="mt-3 text-sm text-white/80">
           {completedLessons.length} of {totalLessons} lessons complete

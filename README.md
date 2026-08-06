@@ -1,10 +1,10 @@
 # Free Chess Training
 
 An open-source chess curriculum that takes players from complete beginner to
-master preparation. Every lesson pairs a written **article** and an embedded
-**video** with interactive **puzzles** (progressive hints + explained ideas),
-links to **grandmaster games**, and a built-in **Stockfish engine** for checking
-any position — all running in the browser, no account required.
+master preparation. Every lesson pairs a written **article** with interactive
+**puzzles** (progressive hints + explained ideas), links to **grandmaster
+games**, and a built-in **Stockfish engine** for checking any position — all
+running in the browser, no account required.
 
 The curriculum (`comprehensive_chess_curriculum.md`) is broken into **181
 one-topic lessons** filed under seven **skill categories**, from board basics to
@@ -15,9 +15,8 @@ not a rating ladder and carry no stage band.
 
 - **Curriculum browser** — 181 lessons across 7 skill categories, as a
   collapsible list, with per-lesson and overall progress tracking.
-- **Lessons** — one topic each: Markdown/MDX article, lazy YouTube Short focused
-  on that concept, practice puzzles, grandmaster game links,
-  and mark-complete tracking.
+- **Lessons** — one topic each: Markdown/MDX article, practice puzzles,
+  grandmaster game links, and mark-complete tracking.
 - **Puzzle trainer** — play the solution line against auto-replied opponent
   moves, with **progressive hints** (revealed one at a time) and an **explained
   idea** on solve.
@@ -172,11 +171,11 @@ src/
     lessons/*.mdx        # one file per lesson (frontmatter + article)
     puzzles/index.ts     # puzzle bank (FEN + solution + hints + idea)
     curriculum.ts        # skill categories + grouping logic
-    videos.ts            # curated lesson Shorts + Shorts search fallback
+    videos.ts            # video assignments (intentionally empty for now)
     lessons.ts           # loads lessons via import.meta.glob
   components/
     chess/               # BoardView, PuzzleTrainer, EnginePanel, EvalBar
-    media/               # YouTubeEmbed, GameLinks
+    media/               # ArticleAudio, GameLinks, YouTubeEmbed
     layout/              # app shell
     live/                # Clock, MoveList, Chat
   engine/                # EngineService (Stockfish worker) + useEngine hook
@@ -192,8 +191,8 @@ worker/                  # live-game server (Worker entry + GameRoom Durable Obj
 
 You add lessons by editing MDX files and puzzle data — see
 [docs/authoring-lessons.md](docs/authoring-lessons.md) for the full guide
-(frontmatter fields, attaching videos/puzzles/games, and importing themed
-puzzles from the free Lichess database).
+(frontmatter fields, attaching puzzles/games, and importing themed puzzles from
+the free Lichess database).
 
 ## Contributing
 

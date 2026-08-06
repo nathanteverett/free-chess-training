@@ -49,10 +49,7 @@ export interface LessonFrontmatter {
   order: number
   /** One-sentence summary shown on cards and previews. */
   summary: string
-  /**
-   * YouTube video ID override. Normally left empty: the lesson's video is
-   * resolved from the curated library in content/videos.ts.
-   */
+  /** Optional YouTube id. Leave empty until a replacement video is approved. */
   youtubeId?: string
   /** IDs of puzzles (see puzzles/*) that practice this lesson. */
   puzzleIds?: string[]

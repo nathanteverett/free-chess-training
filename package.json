@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Open-source chess curriculum: lessons with articles, videos, puzzles, GM games, and a free engine.",
+  "description": "Open-source chess curriculum: lessons with articles, puzzles, GM games, and a free engine.",
   "license": "GPL-3.0-or-later",
   "scripts": {
     "copy-engine": "node scripts/copy-engine.mjs",

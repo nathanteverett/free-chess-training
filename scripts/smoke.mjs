@@ -36,15 +36,21 @@ try {
   check('Expand all reveals every lesson', lessonLinks === 181, `found ${lessonLinks}`)
   await page.screenshot({ path: `${SHOTS}/smoke-home.png`, fullPage: false })
 
-  // 2. Lesson page: video + article + puzzle + games all render.
+  // 2. Lesson page: blank video section + article + puzzle + games render.
   await page.goto(`${BASE}/lesson/${LESSON}`, { waitUntil: 'networkidle' })
   await page.getByRole('heading', { name: /Knight forks/i }).waitFor()
   const hasBoard = await page.locator('[data-square]').first().isVisible()
   check('Lesson puzzle board renders', hasBoard)
-  const hasVideo = await page
-    .getByRole('button', { name: /Play video/i })
+  const hasVideoSection = await page
+    .getByRole('heading', { name: /^Video$/i })
     .isVisible()
-  check('Curated lesson video renders', hasVideo)
+  check('Lesson video section stays visible', hasVideoSection)
+  const linkedVideos = await page
+    .locator(
+      'a[href*="youtube" i], a[href*="youtu.be" i], iframe[src*="youtube" i], button[aria-label^="Play video" i]',
+    )
+    .count()
+  check('Lesson video section has no linked video', linkedVideos === 0)
   const gamesCount = await page.locator('a[href*="wikipedia.org"]').count()
   check('Grandmaster game links render', gamesCount >= 1, `${gamesCount} links`)
 

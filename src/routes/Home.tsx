@@ -3,6 +3,8 @@ import { CATEGORY_ICONS, getCurriculum } from '../content/curriculum'
 import { useProgress } from '../progress/ProgressContext'
 
 const base = import.meta.env.BASE_URL
+const ringRadius = 16
+const ringCircumference = 2 * Math.PI * ringRadius
 
 export function Home() {
   const curriculum = getCurriculum()
@@ -135,7 +137,7 @@ export function Home() {
                     <circle
                       cx="20"
                       cy="20"
-                      r="16"
+                      r={ringRadius}
                       fill="none"
                       stroke="#e9eaf0"
                       strokeWidth="4"
@@ -143,14 +145,12 @@ export function Home() {
                     <circle
                       cx="20"
                       cy="20"
-                      r="16"
+                      r={ringRadius}
                       fill="none"
                       stroke={catPct === 100 ? '#16a34a' : '#2b3f6b'}
                       strokeWidth="4"
                       strokeLinecap="round"
-                      // r=16 gives a circumference of 100.5, so the percentage
-                      // maps almost 1:1 onto the dash length.
-                      strokeDasharray={`${(catPct * 1.005).toFixed(1)} 100.5`}
+                      strokeDasharray={`${((catPct / 100) * ringCircumference).toFixed(1)} ${ringCircumference.toFixed(1)}`}
                     />
                   </svg>
                   <span className="absolute inset-0 flex items-center justify-center text-[10.5px] font-semibold text-neutral-700">

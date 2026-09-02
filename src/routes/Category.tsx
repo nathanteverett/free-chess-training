@@ -36,6 +36,7 @@ export function Category() {
   }
 
   const done = category.lessons.filter((l) => isLessonComplete(l.slug)).length
+  const nextIndex = category.lessons.findIndex((l) => !isLessonComplete(l.slug))
 
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-4">
@@ -82,7 +83,7 @@ export function Category() {
         </div>
         {category.lessons.map((lesson, i) => {
           const complete = isLessonComplete(lesson.slug)
-          const { label, className } = badge(complete, !complete && i === done)
+          const { label, className } = badge(complete, i === nextIndex)
           return (
             <Link
               key={lesson.slug}

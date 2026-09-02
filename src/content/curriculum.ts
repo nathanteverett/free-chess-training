@@ -54,6 +54,20 @@ export const CATEGORY_DEFINITIONS: Omit<SkillCategory, 'lessons'>[] = [
 ]
 
 /**
+ * The pixel-art piece that stands for each category on cards and headers.
+ * Paths are relative to BASE_URL (see `public/pieces`).
+ */
+export const CATEGORY_ICONS: Record<string, string> = {
+  fundamentals: 'pieces/black-pawn.png',
+  tactics: 'pieces/black-knight.png',
+  calculation: 'pieces/black-queen.png',
+  positional: 'pieces/black-bishop.png',
+  structures: 'pieces/black-rook.png',
+  endgames: 'pieces/black-king.png',
+  mastery: 'pieces/white-king.png',
+}
+
+/**
  * Build the curriculum by grouping loaded lessons under their category.
  * Categories appear in CATEGORY_DEFINITIONS order; lessons within a category are
  * sorted by their global `order`.

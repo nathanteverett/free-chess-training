@@ -22,9 +22,9 @@ export interface BoardViewProps {
   maxWidth?: number
 }
 
-/** Board square colors chosen to keep both piece colors clearly legible. */
-export const LIGHT_SQUARE = '#cfdcf3'
-export const DARK_SQUARE = '#5d6ba4'
+/** Board square colors — the design's "navy" board theme. */
+export const LIGHT_SQUARE = '#e7ecf5'
+export const DARK_SQUARE = '#93a3c6'
 
 /**
  * Responsive wrapper around react-chessboard. react-chessboard needs an
@@ -64,8 +64,8 @@ export function BoardView({
         }
         customSquareStyles={customSquareStyles}
         customBoardStyle={{
-          borderRadius: '6px',
-          boxShadow: '0 2px 16px rgba(26, 19, 30, 0.35)',
+          borderRadius: '8px',
+          boxShadow: 'inset 0 0 0 1px #d5dae6',
         }}
         customDarkSquareStyle={{ backgroundColor: DARK_SQUARE }}
         customLightSquareStyle={{ backgroundColor: LIGHT_SQUARE }}

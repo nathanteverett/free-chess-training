@@ -4,25 +4,33 @@
   Theme tokens for the app. Tailwind v4 reads these @theme values and generates
   matching utility classes (e.g. bg-board-light). Keep the palette small.
 
-  The palette is sampled from the pixel-art pieces in icons/pixel-art-fct: the
-  white set is an icy blue (#ecf4fb highlights down to #9ec9fb shading) and the
-  black set a violet-charcoal (#18151c up to #261e27). Board squares sit between
-  the two sets so both read clearly: a pale periwinkle light square and a deep
-  indigo dark square.
+  The palette comes from the Claude Design mock: navy #2b3f6b as the single
+  brand color on a near-white #f7f7f8 page, with zinc-ish neutrals for text and
+  hairline borders. Board squares are the mock's "navy" board theme.
 */
 @theme {
-  --color-board-light: #cfdcf3;
-  --color-board-dark: #5d6ba4;
-  --color-board-highlight: rgba(59, 111, 190, 0.45);
-  --color-brand: #3b6fbe;
-  --color-brand-dark: #2b3f6b;
-  /* Piece-set anchors, reused for surfaces and accents. */
-  --color-ice: #dde6fb;
-  --color-ink: #1a131e;
+  --color-board-light: #e7ecf5;
+  --color-board-dark: #93a3c6;
+  --color-board-highlight: rgba(43, 63, 107, 0.45);
+  --color-brand: #2b3f6b;
+  --color-brand-dark: #24365c;
+  --color-page: #f7f7f8;
+  --color-line: #e4e4e7;
+  --color-ink: #18181b;
+  --font-sans: 'Geist', system-ui, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, monospace;
 }
 
+/*
+  The design is light-only, so redefine `dark:` to key off a `.dark` ancestor
+  that nothing sets. The existing dark: classes stay in the markup but never
+  fire — cheaper than stripping them from every file.
+  ponytail: drop this line and the dead classes if a dark theme is ever wanted.
+*/
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
 }
 
 html,
@@ -33,14 +41,38 @@ body,
 
 body {
   margin: 0;
-  font-family:
-    system-ui,
-    -apple-system,
-    'Segoe UI',
-    Roboto,
-    Helvetica,
-    Arial,
-    sans-serif;
+  font-family: var(--font-sans);
+  background: var(--color-page);
+  color: var(--color-ink);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* Article typography for MDX lesson bodies. */

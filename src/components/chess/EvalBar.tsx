@@ -25,12 +25,12 @@ export function EvalBar({
       aria-label={`Evaluation ${label}`}
     >
       <div
-        className={`absolute ${fillEdge} left-0 w-full bg-ice transition-[height] duration-300`}
+        className={`absolute ${fillEdge} left-0 w-full bg-page transition-[height] duration-300`}
         style={{ height: `${whitePct}%` }}
       />
       <span
         className={`absolute left-1/2 -translate-x-1/2 text-[10px] font-semibold tabular-nums ${labelEdge} ${
-          whiteAhead ? 'text-ink' : 'text-ice'
+          whiteAhead ? 'text-ink' : 'text-page'
         }`}
       >
         {label}

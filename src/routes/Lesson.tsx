@@ -141,25 +141,28 @@ export function Lesson() {
         </section>
       )}
 
-      {tab === 'puzzles' && (
-        <section className="flex animate-[fadeIn_0.2s_ease_both] flex-col gap-4">
-          {puzzles.length > 0 ? (
-            puzzles.map((puzzle, i) => (
-              <PuzzleTrainer
-                key={puzzle.id}
-                puzzle={puzzle}
-                index={i}
-                total={puzzles.length}
-              />
-            ))
-          ) : (
-            <p className="rounded-xl border border-line bg-white p-6 text-sm text-neutral-500">
-              No puzzles attached yet. Add puzzle ids to this lesson’s{' '}
-              <code>puzzleIds</code> frontmatter.
-            </p>
-          )}
-        </section>
-      )}
+      {/* Keep trainer state across tab switches, but reset it for a new lesson. */}
+      <section
+        key={lesson.slug}
+        hidden={tab !== 'puzzles'}
+        className={`${tab === 'puzzles' ? 'flex' : 'hidden'} animate-[fadeIn_0.2s_ease_both] flex-col gap-4`}
+      >
+        {puzzles.length > 0 ? (
+          puzzles.map((puzzle, i) => (
+            <PuzzleTrainer
+              key={puzzle.id}
+              puzzle={puzzle}
+              index={i}
+              total={puzzles.length}
+            />
+          ))
+        ) : (
+          <p className="rounded-xl border border-line bg-white p-6 text-sm text-neutral-500">
+            No puzzles attached yet. Add puzzle ids to this lesson’s{' '}
+            <code>puzzleIds</code> frontmatter.
+          </p>
+        )}
+      </section>
 
       {tab === 'games' && (
         <section className="animate-[fadeIn_0.2s_ease_both] rounded-xl border border-line bg-white p-6">

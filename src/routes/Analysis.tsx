@@ -137,7 +137,7 @@ export function Analysis() {
       )}
 
       <div className="flex justify-center gap-3">
-        <div style={{ height: size }}><EvalBar evaluation={evaluation} /></div>
+        <div style={{ height: size }}><EvalBar evaluation={evaluation} orientation={orientation} /></div>
         <BoardView fen={fen} orientation={orientation} onPieceDrop={onPieceDrop} arePiecesDraggable={!annotatedGame} maxWidth={size} />
       </div>
 

@@ -139,7 +139,7 @@ export function LiveGame() {
             <div className="flex gap-3">
               {analysisBoard && (
                 <div style={{ height: size }}>
-                  <EvalBar evaluation={evaluation} />
+                  <EvalBar evaluation={evaluation} orientation={orientation} />
                 </div>
               )}
               <BoardView
